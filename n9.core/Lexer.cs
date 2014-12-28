@@ -329,6 +329,22 @@ namespace n9.core
                             };
                         }
                     }
+                
+                    if (ch == '=') return new Token { Type = TokenType.Equals, CursorPosition = pos, Text = "=" };
+                    if (ch == '+') return new Token { Type = TokenType.Plus, CursorPosition = pos, Text = "+" };
+                    if (ch == '-') return new Token { Type = TokenType.Minus, CursorPosition = pos, Text = "-" };
+                    if (ch == '*') return new Token { Type = TokenType.Asterisk, CursorPosition = pos, Text = "*" };
+
+                    if (ch == '!') return new Token { Type = TokenType.Bang, CursorPosition = pos, Text = "!" };
+                    if (ch == '.') return new Token { Type = TokenType.Dot, CursorPosition = pos, Text = "." };
+                    if (ch == ',') return new Token { Type = TokenType.Comma, CursorPosition = pos, Text = "," };
+                    if (ch == '(') return new Token { Type = TokenType.LParen, CursorPosition = pos, Text = "(" };
+                    if (ch == ')') return new Token { Type = TokenType.RParen, CursorPosition = pos, Text = ")" };
+                    if (ch == '{') return new Token { Type = TokenType.LCurly, CursorPosition = pos, Text = "{" };
+                    if (ch == '}') return new Token { Type = TokenType.RCurly, CursorPosition = pos, Text = "}" };
+                    if (ch == '[') return new Token { Type = TokenType.LBracket, CursorPosition = pos, Text = "[" };
+                    if (ch == ']') return new Token { Type = TokenType.RBracket, CursorPosition = pos, Text = "]" };
+
                 }
             }
 

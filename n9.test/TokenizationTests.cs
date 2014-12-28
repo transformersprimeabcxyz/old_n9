@@ -114,6 +114,14 @@ namespace n9.test
             Assert.IsTrue(tokens.Count == 2);
         }
 
+        [TestMethod]
+        public void TestSymbols()
+        {
+            var tokens = Tokenize("!.,(){}[]=+-*/");
+            Assert.IsTrue(tokens.Count == 14);
+
+        }
+        
         // ====================================================
 
         List<Token> Tokenize(string pgm)
