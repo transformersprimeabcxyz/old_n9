@@ -60,7 +60,7 @@ namespace n9.core
             return (ch >= '0' && ch <= '7');
         }
 
-        static int AsHexDigit(int ch)
+        static int AsHexDigit(int ch) // TODO unused currently
         {
             if (ch >= '0' && ch <= '9')
                 return ch - '0';
@@ -84,7 +84,7 @@ namespace n9.core
             return IsFirstIdChar(ch) || IsDigit(ch);
         }
 
-        static bool IsValidSymbolName(string id)
+        static bool IsValidSymbolName(string id) // TODO note unused
         {
             if (id == null || id.Length == 0)
                 return false;
@@ -97,6 +97,32 @@ namespace n9.core
                     return false;
 
             return true;
+        }
+
+        char ReadStringLiteralChar()
+        {
+            int ch = Read();
+            if (ch != '\\')
+                return (char) ch;
+
+            int ch2 = Read();
+            if (ch2 == 'n') return '\n'; 
+            if (ch2 == 'r') return '\r';
+            if (ch2 == 't') return '\t';
+            if (ch2 == '0') return '\0';
+            if (ch2 == '"') return '\"';
+            if (ch2 == '\\') return '\\'; 
+            if (ch2 == '\'') return '\''; 
+
+            // I dont really know what the use of these are but I will keep them for... some reason
+            if (ch2 == 'a') return '\a'; 
+            if (ch2 == 'b') return '\b';
+            if (ch2 == 'f') return '\f'; 
+            if (ch2 == 'v') return '\v';
+
+            // TODO /u unicode stuff
+
+            throw new CompilationException(Diagnostic.Error("Invalid character sequence \\" + (char)ch2));
         }
 
         // =====================================================================
@@ -345,6 +371,31 @@ namespace n9.core
                     if (ch == '[') return new Token { Type = TokenType.LBracket, CursorPosition = pos, Text = "[" };
                     if (ch == ']') return new Token { Type = TokenType.RBracket, CursorPosition = pos, Text = "]" };
 
+                    if (ch == '"') // string literals
+                    {
+                        strbuf.Clear();
+
+                        while (true)
+                        {
+                            ch2 = Peek();
+                            if (ch2 == '"' || ch2 == -1) break;
+                            char c = ReadStringLiteralChar();
+                            strbuf.Append(c);
+                        }
+                        if (ch2 == -1)
+                            throw new CompilationException(Diagnostic.Error("Unterminated string constant"));
+                        Read(); //consume trailing "
+                        string literal = strbuf.ToString();
+                        Console.WriteLine(literal);
+                        return new Token { Type = TokenType.StringLiteral, CursorPosition = pos, StringLiteral = literal, Text = literal };
+                        // TODO supporting A"strings" for ascii strings?
+                        // TODO support wide strings????????????????? lame.
+                        // TODO support..raw strings?
+                        // What else?
+                    }
+
+                    // TODO, char literals (but what to do with them?
+                    // TODO, bool literals........
                 }
             }
 

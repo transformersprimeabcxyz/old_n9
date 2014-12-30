@@ -119,9 +119,39 @@ namespace n9.test
         {
             var tokens = Tokenize("!.,(){}[]=+-*/");
             Assert.IsTrue(tokens.Count == 14);
-
         }
-        
+
+        [TestMethod]
+        public void TestStringLiterals()
+        {
+            var tokens = Tokenize("\"Hello World\"");  // tokenize "Hello World"
+            Assert.IsTrue(tokens.Count == 1);
+            Assert.IsTrue(tokens[0].Type == TokenType.StringLiteral);
+            Assert.IsTrue(tokens[0].StringLiteral == "Hello World");
+
+            tokens = Tokenize("\"Hello \nWorld\"");
+            Assert.IsTrue(tokens.Count == 1);
+            Assert.IsTrue(tokens[0].StringLiteral.Contains("\n"));
+
+            tokens = Tokenize("\"\\t\"");
+            Assert.IsTrue(tokens.Count == 1);
+            Assert.IsTrue(tokens[0].StringLiteral == "\t");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CompilationException))]
+        public void TestStringBadControlCodes()
+        {
+            var tokens = Tokenize("\"\\m is not a valid control code\"");  // tokenizing "\m"
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CompilationException))]
+        public void TestUnterminatedStringLiteral()
+        {
+            var tokens = Tokenize("\"This string does not have a terminating quotation mark");
+        }
+
         // ====================================================
 
         List<Token> Tokenize(string pgm)
