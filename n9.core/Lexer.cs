@@ -95,6 +95,9 @@ namespace n9.core
             return true;
         }
 
+        // TODO: I thoroughly dislike the mismatched use of 'char' and 'int'.
+        // Things to fix eventually.
+
         char ReadStringLiteralChar()
         {
             int ch = Read();
