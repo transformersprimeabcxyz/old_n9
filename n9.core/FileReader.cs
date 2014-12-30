@@ -103,8 +103,8 @@ namespace n9.core
             }
         }
 
-        public CursorPosition Pos
-        { get { return new CursorPosition { col = state.Column, row = state.Line }; } }
+        public FilePosition Pos
+        { get { return new FilePosition { Filename = this.Filename, col = state.Column, row = state.Line }; } }
 
         /*
         static bool IsIdChar(int ch)

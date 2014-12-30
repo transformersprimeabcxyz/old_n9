@@ -131,7 +131,7 @@ namespace n9.core
 
         public Token Next()
         {
-            CursorPosition pos;
+            FilePosition pos;
             int ch, ch2;
 
             //try
@@ -175,7 +175,7 @@ namespace n9.core
                             continue;
                         }
                         // else, div
-                        return new Token { Type = TokenType.Divslash, CursorPosition = pos, Text = "/" };
+                        return new Token { Type = TokenType.Divslash, Position = pos, Text = "/" };
                     }
 
                     // identifier or keyword
@@ -195,10 +195,10 @@ namespace n9.core
 
                             string id = strbuf.ToString(); 
                             if (keywords.ContainsKey(id)) // Is it a keyword?
-                                return new Token { Type = keywords[id], CursorPosition = pos, Text = id };
+                                return new Token { Type = keywords[id], Position = pos, Text = id };
 
                             // regular identifier
-                            return new Token { Type = TokenType.Id, CursorPosition = pos, Text = id };
+                            return new Token { Type = TokenType.Id, Position = pos, Text = id };
                         }
                         
                     }
@@ -225,7 +225,7 @@ namespace n9.core
                                 return new Token
                                 {
                                     Type = TokenType.IntLiteral,
-                                    CursorPosition = pos,
+                                    Position = pos,
                                     Text = "0x" + rawnum,
                                     IntegerLiteral = Convert.ToInt64(rawnum, 16),
                                     NumberLiteralClass = NumberLiteralClass.Int
@@ -251,7 +251,7 @@ namespace n9.core
                                 return new Token
                                 {
                                     Type = TokenType.IntLiteral,
-                                    CursorPosition = pos,
+                                    Position = pos,
                                     Text = "0b" + rawnum,
                                     IntegerLiteral = Convert.ToInt64(rawnum, 2),
                                     NumberLiteralClass = NumberLiteralClass.Int
@@ -277,7 +277,7 @@ namespace n9.core
                                 return new Token
                                 {
                                     Type = TokenType.IntLiteral,
-                                    CursorPosition = pos,
+                                    Position = pos,
                                     Text = "0o" + rawnum,
                                     IntegerLiteral = Convert.ToInt64(rawnum, 8),
                                     NumberLiteralClass = NumberLiteralClass.Int
@@ -315,7 +315,7 @@ namespace n9.core
                                     return new Token
                                     {
                                         Type = TokenType.FloatLiteral,
-                                        CursorPosition = pos,
+                                        Position = pos,
                                         Text = rawnum,
                                         FloatLiteral = Double.Parse(rawnum),
                                         NumberLiteralClass = NumberLiteralClass.Decimal,
@@ -327,7 +327,7 @@ namespace n9.core
                                     return new Token
                                     {
                                         Type = TokenType.FloatLiteral,
-                                        CursorPosition = pos,
+                                        Position = pos,
                                         Text = rawnum,
                                         FloatLiteral = Double.Parse(rawnum),
                                         NumberLiteralClass = NumberLiteralClass.Float32,
@@ -338,7 +338,7 @@ namespace n9.core
                                 return new Token
                                 {
                                     Type = TokenType.FloatLiteral,
-                                    CursorPosition = pos,
+                                    Position = pos,
                                     Text = rawnum,
                                     FloatLiteral = Double.Parse(rawnum),
                                     NumberLiteralClass = NumberLiteralClass.Float64,
@@ -348,7 +348,7 @@ namespace n9.core
                             return new Token
                             {
                                 Type = TokenType.IntLiteral,
-                                CursorPosition = pos,
+                                Position = pos,
                                 Text = rawnum,
                                 IntegerLiteral = Int64.Parse(rawnum),
                                 NumberLiteralClass = NumberLiteralClass.Int,
@@ -356,20 +356,20 @@ namespace n9.core
                         }
                     }
                 
-                    if (ch == '=') return new Token { Type = TokenType.Equals, CursorPosition = pos, Text = "=" };
-                    if (ch == '+') return new Token { Type = TokenType.Plus, CursorPosition = pos, Text = "+" };
-                    if (ch == '-') return new Token { Type = TokenType.Minus, CursorPosition = pos, Text = "-" };
-                    if (ch == '*') return new Token { Type = TokenType.Asterisk, CursorPosition = pos, Text = "*" };
+                    if (ch == '=') return new Token { Type = TokenType.Equals, Position = pos, Text = "=" };
+                    if (ch == '+') return new Token { Type = TokenType.Plus, Position = pos, Text = "+" };
+                    if (ch == '-') return new Token { Type = TokenType.Minus, Position = pos, Text = "-" };
+                    if (ch == '*') return new Token { Type = TokenType.Asterisk, Position = pos, Text = "*" };
 
-                    if (ch == '!') return new Token { Type = TokenType.Bang, CursorPosition = pos, Text = "!" };
-                    if (ch == '.') return new Token { Type = TokenType.Dot, CursorPosition = pos, Text = "." };
-                    if (ch == ',') return new Token { Type = TokenType.Comma, CursorPosition = pos, Text = "," };
-                    if (ch == '(') return new Token { Type = TokenType.LParen, CursorPosition = pos, Text = "(" };
-                    if (ch == ')') return new Token { Type = TokenType.RParen, CursorPosition = pos, Text = ")" };
-                    if (ch == '{') return new Token { Type = TokenType.LCurly, CursorPosition = pos, Text = "{" };
-                    if (ch == '}') return new Token { Type = TokenType.RCurly, CursorPosition = pos, Text = "}" };
-                    if (ch == '[') return new Token { Type = TokenType.LBracket, CursorPosition = pos, Text = "[" };
-                    if (ch == ']') return new Token { Type = TokenType.RBracket, CursorPosition = pos, Text = "]" };
+                    if (ch == '!') return new Token { Type = TokenType.Bang, Position = pos, Text = "!" };
+                    if (ch == '.') return new Token { Type = TokenType.Dot, Position = pos, Text = "." };
+                    if (ch == ',') return new Token { Type = TokenType.Comma, Position = pos, Text = "," };
+                    if (ch == '(') return new Token { Type = TokenType.LParen, Position = pos, Text = "(" };
+                    if (ch == ')') return new Token { Type = TokenType.RParen, Position = pos, Text = ")" };
+                    if (ch == '{') return new Token { Type = TokenType.LCurly, Position = pos, Text = "{" };
+                    if (ch == '}') return new Token { Type = TokenType.RCurly, Position = pos, Text = "}" };
+                    if (ch == '[') return new Token { Type = TokenType.LBracket, Position = pos, Text = "[" };
+                    if (ch == ']') return new Token { Type = TokenType.RBracket, Position = pos, Text = "]" };
 
                     if (ch == '"') // string literals
                     {
@@ -387,7 +387,7 @@ namespace n9.core
                         Read(); //consume trailing "
                         string literal = strbuf.ToString();
                         Console.WriteLine(literal);
-                        return new Token { Type = TokenType.StringLiteral, CursorPosition = pos, StringLiteral = literal, Text = literal };
+                        return new Token { Type = TokenType.StringLiteral, Position = pos, StringLiteral = literal, Text = literal };
                         // TODO supporting A"strings" for ascii strings?
                         // TODO support wide strings????????????????? lame.
                         // TODO support..raw strings?

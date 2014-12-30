@@ -2,32 +2,12 @@
 {
     // All this stuff should be treated as immutable.
     // Normally we would use 'readonly' to denote immutableness, but then we can't use object initializer syntax, which makes us sad.
-    
-    public struct CursorPosition
-    {
-        public int row;
-        public int col;
-    }
 
     public struct FilePosition
     {
         public string Filename;
         public int row;
         public int col;
-        
-        public FilePosition(string filename, int row, int col)
-        {
-            Filename = filename;
-            this.col = col;
-            this.row = row;
-        }
-
-        public FilePosition(string filename, CursorPosition pos)
-        {
-            Filename = filename;
-            col = pos.col;
-            row = pos.row;
-        }
     }
 
     public enum TokenType
@@ -73,7 +53,7 @@
     {
         public string Text;
         public TokenType Type;
-        public CursorPosition CursorPosition;
+        public FilePosition Position;
         
         // This is where unions would be good.
         public long IntegerLiteral;
@@ -82,11 +62,11 @@
         public string StringLiteral;
         public NumberLiteralClass NumberLiteralClass;
 
-        public static Token EOF(CursorPosition pos) { return new Token { Type=TokenType.EOF, CursorPosition=pos, Text = "<EOF>" }; }
+        public static Token EOF(FilePosition pos) { return new Token { Type=TokenType.EOF, Position=pos, Text = "<EOF>" }; }
 
         public override string ToString()
         {
-            return string.Format("[{0}:{1}] : {2} {3}",CursorPosition.row, CursorPosition.col, Type, Text);
+            return string.Format("[{0}:{1}] : {2} {3}", Position.row, Position.col, Type, Text);
         }
     }
 }
