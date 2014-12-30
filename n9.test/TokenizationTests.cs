@@ -158,7 +158,7 @@ namespace n9.test
         {
             var tokens = new List<Token>();
             var fr = FileReader.FromString(pgm);
-            var lx = new Lexer(fr, "default");
+            var lx = new Lexer(fr);
             while (true)
             {
                 var t = lx.Next();

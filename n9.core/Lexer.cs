@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace n9.core
 {
@@ -13,7 +11,6 @@ namespace n9.core
         // =====================================================================
 
         FileReader reader;
-        string filename; // Did I just needlessly add filename to FileReader?
         StringBuilder strbuf = new StringBuilder();
         //DiagnosticREceiver
 
@@ -21,10 +18,9 @@ namespace n9.core
         //  Constructor, helpers
         // =====================================================================
 
-        public Lexer(FileReader reader, string filename)
+        public Lexer(FileReader reader)
         {
             this.reader = reader;
-            this.filename = filename;
         }
 
         int Read() { return reader.Read(); }

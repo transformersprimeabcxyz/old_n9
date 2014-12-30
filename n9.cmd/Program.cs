@@ -8,7 +8,7 @@ namespace n9.cmd
 		static void Main(string[] args)
 		{
             var fr = FileReader.FromString(@"1.0m");
-            var lx = new Lexer(fr, "");
+            var lx = new Lexer(fr);
             while (true)
             {
                 var t = lx.Next();
