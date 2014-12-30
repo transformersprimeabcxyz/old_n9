@@ -152,6 +152,20 @@ namespace n9.test
             var tokens = Tokenize("\"This string does not have a terminating quotation mark");
         }
 
+        [TestMethod]
+        public void TestStringLiteralLinefeeds()
+        {
+            var tokens = Tokenize("\"Test \r\n String'\""); // Tokenize "Test <CR><LF> String" -- \r should get stripped out
+            Assert.IsTrue(tokens[0].StringLiteral.Contains("\n"));
+            Assert.IsTrue(tokens[0].StringLiteral.Contains("\r") == false);
+            
+            tokens = Tokenize("\"Test \\r\\n String'\""); // Tokenize "Test \r\n String" -- \r should be left intact
+            Assert.IsTrue(tokens[0].StringLiteral.Contains("\r"));
+
+            tokens = Tokenize("\"Test \\\\r String'\""); // Tokenize "Test \\r String" -- string @"\r" should be present in literal
+            Assert.IsTrue(tokens[0].StringLiteral.Contains(@"\r"));
+        }
+
         // ====================================================
 
         List<Token> Tokenize(string pgm)

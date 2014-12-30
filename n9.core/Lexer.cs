@@ -375,6 +375,13 @@ namespace n9.core
                         {
                             ch2 = Peek();
                             if (ch2 == '"' || ch2 == -1) break;
+                            if (ch2 == '\r')
+                            {
+                                // strip /r's from multi-line literals. you can use "\r" explicitly if needed.
+                                // This should make builds be the same regardless of source line endings.
+                                Read();
+                                continue;
+                            }
                             char c = ReadStringLiteralChar();
                             strbuf.Append(c);
                         }
