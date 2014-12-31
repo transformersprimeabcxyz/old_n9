@@ -37,14 +37,19 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Diagnostic.cs" />
-    <Compile Include="FileReader.cs" />
-    <Compile Include="Lexer.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="Frontend\AST\Expression.cs" />
+    <Compile Include="Frontend\AST\Statement.cs" />
+    <Compile Include="Frontend\AST\StructDeclaration.cs" />
+    <Compile Include="Frontend\Diagnostic.cs" />
+    <Compile Include="Frontend\FileReader.cs" />
+    <Compile Include="Frontend\Lexer.cs" />
+    <Compile Include="Frontend\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="manifesto.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

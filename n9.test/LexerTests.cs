@@ -1,16 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using n9.core;
 
 namespace n9.test
 {
 	[TestClass]
-	public class TokenizationTests
+	public class LexerTests
 	{
 		[TestMethod]
-		public void TestIntegerLiterals()
+		public void Lexer_IntegerLiterals()
 		{
             var tokens = Tokenize("0");
             Assert.IsTrue(tokens.Count == 1);
@@ -56,7 +54,7 @@ namespace n9.test
 		}
 
         [TestMethod]
-        public void TestFloatLiterals()
+        public void Lexer_FloatLiterals()
         {
             var tokens = Tokenize("1.0");
             Assert.IsTrue(tokens.Count == 1);
@@ -85,14 +83,14 @@ namespace n9.test
 
         [TestMethod]
         [ExpectedException(typeof(CompilationException))]
-        public void TestBadFloat()
+        public void Lexer_BadFloat()
         {
             // TODO, we want to change this from a CompilationExecption to a Diagnostic later.
             var tokens = Tokenize("1.0.0");
         }
 
         [TestMethod]
-        public void TestComments()
+        public void Lexer_Comments()
         {
             var tokens = Tokenize(@"
                 // line comment 1
@@ -115,14 +113,14 @@ namespace n9.test
         }
 
         [TestMethod]
-        public void TestSymbols()
+        public void Lexer_Symbols()
         {
-            var tokens = Tokenize("!.,(){}[]=+-*/");
-            Assert.IsTrue(tokens.Count == 14);
+            var tokens = Tokenize("!.,(){}[]=+-*/:;");
+            Assert.IsTrue(tokens.Count == 16);
         }
 
         [TestMethod]
-        public void TestStringLiterals()
+        public void Lexer_StringLiterals()
         {
             var tokens = Tokenize("\"Hello World\"");  // tokenize "Hello World"
             Assert.IsTrue(tokens.Count == 1);
@@ -140,20 +138,20 @@ namespace n9.test
 
         [TestMethod]
         [ExpectedException(typeof(CompilationException))]
-        public void TestStringBadControlCodes()
+        public void Lexer_StringBadControlCodes()
         {
             var tokens = Tokenize("\"\\m is not a valid control code\"");  // tokenizing "\m"
         }
 
         [TestMethod]
         [ExpectedException(typeof(CompilationException))]
-        public void TestUnterminatedStringLiteral()
+        public void Lexer_UnterminatedStringLiteral()
         {
             var tokens = Tokenize("\"This string does not have a terminating quotation mark");
         }
 
         [TestMethod]
-        public void TestStringLiteralLinefeeds()
+        public void Lexer_StringLiteralLinefeeds()
         {
             var tokens = Tokenize("\"Test \r\n String'\""); // Tokenize "Test <CR><LF> String" -- \r should get stripped out
             Assert.IsTrue(tokens[0].StringLiteral.Contains("\n"));

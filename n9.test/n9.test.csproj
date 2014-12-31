@@ -56,7 +56,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TokenizationTests.cs" />
+    <Compile Include="ParserTests.cs" />
+    <Compile Include="LexerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

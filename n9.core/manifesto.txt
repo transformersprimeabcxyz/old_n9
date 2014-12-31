@@ -1,0 +1,68 @@
+﻿===========================
+n9 manifesto
+===========================
+
+n9 language intends to be "a better C". This claim has been made before, but probably not quite so literally.
+If you think to yourself, "C would be a good language to write this project in, but man I hate writing C code",
+then n9 would be a good candidate for your project. Otherwise, it probably is not for you.
+
+The overriding guiding language precept is "C ABI compatibility". This precept makes several language design
+decisions for us, and implies several pros and cons:
+ - No garbage collection
+ - No exceptions
+ - Static typing
+ - No header files. No forward declarations.
+ - The point of C ABI compatibility is interoperability. It is necessary, but not sufficient, to be able to 
+   consume C libraries in n9 code. It is also required to be able to consume n9 libraries from C code, and by
+   extension, from C++, D, rust, go, nim, C#, java, python, etc.
+ - This has to really work. In theory you can make shared libraries in D and consume them in C, but in practice
+   this is a really bad idea.
+
+Additional principals of the project:
+ 
+ - n9's primary use case is the creation of high-performance libraries that can be consumed by higher level languages.
+ - It is also just fine for creating entire programs in, as long as "writing said entire program in C" is a good idea.
+ - n9 aims to be useful, whether or not anyone uses it or not. 
+   It is not an academic project, it's here to solve a problem.
+ - Performance is absolutely critical. As a result it must produce fast programs today, with no
+   performance loss vs writing in C. Theoretical performance is uninteresting.
+ - In its current form, it accomplishes both "high performance" and "C ABI compabitility" by
+   compiling to C code and then invoking established C compilers. This "compile to C" is NOT 
+   an intrinsic part of the language, though it is quite likely that this will remain in place for
+   some time, as LLVM integration is not in any way straighforward.
+ - While this is the case, multiple C compiler targets should be supported. GCC, clang, visual C++ (2013), and TCC.
+   TCC would be embedded for cases where no other C compiler is available on the host platform; additionally it 
+   might be used for "fast build speed" modes.
+ - Although C ABI compatiblity and consuming n9 libraries from other languages is a goal, some concessions are 
+   made. For example, namespacing is absolutely required, therefore name mangling will be utilized, with options for 
+   exported symbols.
+ - This project shares many goals with Jonathan Blow's "jai" game programming language. It is too early to say how
+   JAI will turn out. Our priorities may be different than his. If his language evolves faster and meets our goals,
+   then we should adopt his language or merge useful ideas into it (if possible). Consider this a backup implementation,
+   this niche is too important to go unserved.
+ - This C# compiler is a prototype compiler. Eventually, we would rewrite the compiler in n9. 
+   This is not because bootstrapping is cool. We WOULD write the compiler in C, because C is fast and runs everywhere.
+   But I hate writing C code, _thats the whole point of this project_. 
+   We want to run on (basically) all platforms that C runs on, Windows/Linux/Mac (in that order).
+ - Rust-style safety is not a priority to us. C would be close to fine with us, if it was more modernized. C will never
+   reach this goal until it sheds backward compatibility.
+ - Unlike java, d, or rust, how you divide your code into different source files should not matter.
+ - We do "project-level" compilation, not partial compilation. There are real pros and cons to partial compilation.
+   There are ways to make project-level compilation fast enough, I think. 
+   In .NET terminology, we would compile at the Assembly level.
+ - Interfaces are good... Potentially via fat pointers; we would prefer not to have to modify your structs other than padding.
+ - Type inference for sure.
+ - Multiple return values via autogen struct.
+ - C# style implicit/explicit type conversion?
+ - Getters/Setters properties ala C#?
+ - Defer statement for sure
+ - Some kind of foreach... but not sure about fancy iterators
+ - Optional/default/named parameters
+ - Tracking of nullability/non-nullability?
+ - Probably operator overloading
+ - Rusts "loop" keyword is probably a good thing. I have a LOT of while(true) in this compiler.
+   Maybe that's just my failure to construct more clever loops but whatever. Its how I write code.
+
+
+
+ - Note to self, Andrei's Expected<T> talk is interesting.

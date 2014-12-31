@@ -363,6 +363,8 @@ namespace n9.core
                     if (ch == '!') return new Token { Type = TokenType.Bang, Position = pos, Text = "!" };
                     if (ch == '.') return new Token { Type = TokenType.Dot, Position = pos, Text = "." };
                     if (ch == ',') return new Token { Type = TokenType.Comma, Position = pos, Text = "," };
+                    if (ch == ':') return new Token { Type = TokenType.Colon, Position = pos, Text = ":" };
+                    if (ch == ';') return new Token { Type = TokenType.Semi, Position = pos, Text = ";" };
                     if (ch == '(') return new Token { Type = TokenType.LParen, Position = pos, Text = "(" };
                     if (ch == ')') return new Token { Type = TokenType.RParen, Position = pos, Text = ")" };
                     if (ch == '{') return new Token { Type = TokenType.LCurly, Position = pos, Text = "{" };
@@ -408,7 +410,6 @@ namespace n9.core
          //   return null;
         }
 
-
         // =====================================================================
         //  Keywords
         // =====================================================================
@@ -422,5 +423,77 @@ namespace n9.core
 			keywords["struct"] = TokenType.Struct;
 			keywords["func"] = TokenType.Func;
 		}
+    }
+
+    // =====================================================================
+    //  Token definitions
+    // =====================================================================
+
+    public struct FilePosition
+    {
+        public string Filename;
+        public int row;
+        public int col;
+    }
+
+    public enum NumberLiteralClass
+    {
+        Int,
+        Float32,
+        Float64,
+        Decimal
+    }
+
+    public class Token
+    {
+        public string Text;
+        public TokenType Type;
+        public FilePosition Position;
+
+        public long IntegerLiteral;
+        public double FloatLiteral;
+        public char CharLiteral;
+        public string StringLiteral;
+        public NumberLiteralClass NumberLiteralClass;
+
+        public static Token EOF(FilePosition pos) { return new Token { Type = TokenType.EOF, Position = pos, Text = "<EOF>" }; }
+
+        public override string ToString()
+        {
+            return string.Format("[{0}:{1}] : {2} {3}", Position.row, Position.col, Type, Text);
+        }
+    }
+
+    public enum TokenType
+    {
+        Id,
+
+        IntLiteral,
+        CharLiteral,
+        StringLiteral,
+        FloatLiteral,
+
+        Func,
+        Struct,
+
+        Bang,
+        Dot,
+        Comma,
+        Colon,
+        Semi,
+        LParen,
+        RParen,
+        LCurly,
+        RCurly,
+        LBracket,
+        RBracket,
+
+        Equals,
+        Plus,
+        Minus,
+        Asterisk,
+        Divslash,
+
+        EOF
     }
 }
