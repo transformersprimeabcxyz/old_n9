@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Frontend\AST\Expression.cs" />
     <Compile Include="Frontend\AST\Statement.cs" />
+    <Compile Include="Frontend\AST\VariableDeclaration.cs" />
     <Compile Include="Frontend\AST\StructDeclaration.cs" />
     <Compile Include="Frontend\Diagnostic.cs" />
     <Compile Include="Frontend\FileReader.cs" />

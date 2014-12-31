@@ -45,6 +45,13 @@ namespace n9.core
                 var t = LookAhead(0);
                 switch (t.Type)
                 {
+                    case TokenType.Id:
+                        if (LookAhead(1).Type == TokenType.Colon)
+                        {
+                            stmts.Add(ParseVarDecl());
+                            break;
+                        }
+                        throw new CompilationException(Diagnostic.Error("We don't handle this yet")); // TODO replace with Diagnostic error.
                     case TokenType.Struct:
                         stmts.Add(ParseStruct());
                         break;
@@ -107,6 +114,39 @@ namespace n9.core
         // =====================================================================
         //  Parselets
         // =====================================================================
+
+        VariableDeclaration ParseVarDecl()
+        {
+            var name = Consume(TokenType.Id);
+            Consume(TokenType.Colon);
+
+            var decl = new VariableDeclaration();
+            decl.Name = name.Text;
+
+            // Now we either have to parse a type, or the type may be inferred.
+            var next = LookAhead(0);
+            if (next.Type == TokenType.Equals)
+            {
+                // Invoked type-inference syntax
+                Consume();
+                // at this point we would parse an expression. Inferring type will require resolution of functions that may be called....
+                // So we can't finalizing inference now.
+                // Right now, I dont even have an expression parser, so...
+                Consume(TokenType.Semi);
+                decl.Type = "auto";
+                return decl;
+            }
+
+            // We are in the explicitly-typed path.
+            var type = Consume(TokenType.Id);
+            decl.Type = type.Text;
+            // TODO, pointers
+            // TODO, arrays,
+            // TODO, initializers
+            // TODO should just generalize "parse a type"
+            Consume(TokenType.Semi); // for now we just assume semi is here
+            return decl;
+        }
 
         StructDeclaration ParseStruct()
         {
