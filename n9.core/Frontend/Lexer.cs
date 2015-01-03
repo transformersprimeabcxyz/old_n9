@@ -355,20 +355,20 @@ namespace n9.core
                         }
                     }
                 
-                    if (ch == '=') return new Token { Type = TokenType.Equals, Position = pos, Text = "=" };
-                    if (ch == '+') return new Token { Type = TokenType.Plus, Position = pos, Text = "+" };
-                    if (ch == '-') return new Token { Type = TokenType.Minus, Position = pos, Text = "-" };
+                    if (ch == '=') return new Token { Type = TokenType.Equals,   Position = pos, Text = "=" };
+                    if (ch == '+') return new Token { Type = TokenType.Plus,     Position = pos, Text = "+" };
+                    if (ch == '-') return new Token { Type = TokenType.Minus,    Position = pos, Text = "-" };
                     if (ch == '*') return new Token { Type = TokenType.Asterisk, Position = pos, Text = "*" };
 
-                    if (ch == '!') return new Token { Type = TokenType.Bang, Position = pos, Text = "!" };
-                    if (ch == '.') return new Token { Type = TokenType.Dot, Position = pos, Text = "." };
-                    if (ch == ',') return new Token { Type = TokenType.Comma, Position = pos, Text = "," };
-                    if (ch == ':') return new Token { Type = TokenType.Colon, Position = pos, Text = ":" };
-                    if (ch == ';') return new Token { Type = TokenType.Semi, Position = pos, Text = ";" };
-                    if (ch == '(') return new Token { Type = TokenType.LParen, Position = pos, Text = "(" };
-                    if (ch == ')') return new Token { Type = TokenType.RParen, Position = pos, Text = ")" };
-                    if (ch == '{') return new Token { Type = TokenType.LCurly, Position = pos, Text = "{" };
-                    if (ch == '}') return new Token { Type = TokenType.RCurly, Position = pos, Text = "}" };
+                    if (ch == '!') return new Token { Type = TokenType.Bang,     Position = pos, Text = "!" };
+                    if (ch == '.') return new Token { Type = TokenType.Dot,      Position = pos, Text = "." };
+                    if (ch == ',') return new Token { Type = TokenType.Comma,    Position = pos, Text = "," };
+                    if (ch == ':') return new Token { Type = TokenType.Colon,    Position = pos, Text = ":" };
+                    if (ch == ';') return new Token { Type = TokenType.Semi,     Position = pos, Text = ";" };
+                    if (ch == '(') return new Token { Type = TokenType.LParen,   Position = pos, Text = "(" };
+                    if (ch == ')') return new Token { Type = TokenType.RParen,   Position = pos, Text = ")" };
+                    if (ch == '{') return new Token { Type = TokenType.LCurly,   Position = pos, Text = "{" };
+                    if (ch == '}') return new Token { Type = TokenType.RCurly,   Position = pos, Text = "}" };
                     if (ch == '[') return new Token { Type = TokenType.LBracket, Position = pos, Text = "[" };
                     if (ch == ']') return new Token { Type = TokenType.RBracket, Position = pos, Text = "]" };
 

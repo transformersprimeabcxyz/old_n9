@@ -33,10 +33,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extension.cs" />
     <Compile Include="Frontend\AST\Expression.cs" />
     <Compile Include="Frontend\AST\Statement.cs" />
     <Compile Include="Frontend\AST\VariableDeclaration.cs" />
@@ -45,6 +49,10 @@
     <Compile Include="Frontend\FileReader.cs" />
     <Compile Include="Frontend\Lexer.cs" />
     <Compile Include="Frontend\Parser.cs" />
+    <Compile Include="PrattTest\Operator.cs" />
+    <Compile Include="PrattTest\PrattParser.cs" />
+    <Compile Include="PrattTest\Parselet.cs" />
+    <Compile Include="PrattTest\Scope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

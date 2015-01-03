@@ -7,17 +7,26 @@ namespace n9.cmd
 	{
 		static void Main(string[] args)
 		{
+
+            var p = PrattParser.FromString("-2");
+            var ex = p.ParseExpression();
+
+            ex.Dump();
+
+
             var pgm = Parser.FromString(@"
+
 struct hello 
 {
     test : int; 
     froob : string;
     inferred := ;
 }
+
 ").Parse();
-            foreach (var stmt in pgm)
-                Console.WriteLine(stmt);
+
             
+
             /*
             var fr = FileReader.FromString(@"1.0m");
             var lx = new Lexer(fr);
