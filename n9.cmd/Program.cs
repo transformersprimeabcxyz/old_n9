@@ -7,36 +7,17 @@ namespace n9.cmd
 	{
 		static void Main(string[] args)
 		{
+            Console.WriteLine(Parser.FromString("2+5*3").ParseExpression());
+            Console.WriteLine(Parser.FromString("2*5+3").ParseExpression());
 
-            var p = PrattParser.FromString("-2");
-            var ex = p.ParseExpression();
+            Console.WriteLine(Parser.FromString("5+3*2").ParseExpression());
+            Console.WriteLine(Parser.FromString("(5+-3)*2").ParseExpression());
 
-            ex.Dump();
+            Console.WriteLine(Parser.FromString("1/2.").ParseExpression());
 
+            var expr = Parser.FromString("2(foo)").ParseExpression();
+            Console.WriteLine("---");
 
-            var pgm = Parser.FromString(@"
-
-struct hello 
-{
-    test : int; 
-    froob : string;
-    inferred := ;
-}
-
-").Parse();
-
-            
-
-            /*
-            var fr = FileReader.FromString(@"1.0m");
-            var lx = new Lexer(fr);
-            while (true)
-            {
-                var t = lx.Next();
-                Console.WriteLine(t);
-                if (t.Type == TokenType.EOF) break;
-            }
-            */
 		}
 	}
 }

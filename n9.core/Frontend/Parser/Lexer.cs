@@ -462,6 +462,20 @@ namespace n9.core
         {
             return string.Format("[{0}:{1}] : {2} {3}", Position.row, Position.col, Type, Text);
         }
+
+        public Token Clone()
+        {
+            return new Token {
+                Text = this.Text,
+                Type = this.Type,
+                Position = this.Position,
+                IntegerLiteral = this.IntegerLiteral,
+                FloatLiteral = this.FloatLiteral,
+                CharLiteral = this.CharLiteral,
+                StringLiteral = this.StringLiteral,
+                NumberLiteralClass = this.NumberLiteralClass
+            };
+        }
     }
 
     public enum TokenType
