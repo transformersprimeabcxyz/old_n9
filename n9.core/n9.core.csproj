@@ -37,13 +37,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Frontend\AST\Statement.cs" />
-    <Compile Include="Frontend\AST\VariableDeclaration.cs" />
-    <Compile Include="Frontend\AST\StructDeclaration.cs" />
+    <Compile Include="Frontend\Parser\Statements.cs" />
     <Compile Include="Frontend\Diagnostic.cs" />
     <Compile Include="Frontend\FileReader.cs" />
     <Compile Include="Frontend\Parser\Lexer.cs" />
-    <Compile Include="Frontend\Parser\OldParser.cs" />
     <Compile Include="Frontend\Parser\Expressions.cs" />
     <Compile Include="Frontend\Parser\InfixParselets.cs" />
     <Compile Include="Frontend\Parser\PrefixParselets.cs" />

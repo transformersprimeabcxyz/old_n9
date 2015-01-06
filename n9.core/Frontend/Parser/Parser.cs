@@ -101,7 +101,7 @@ namespace n9.core
         }
 
         // =====================================================================
-        //  Parsing
+        //  Expression Parsing
         // =====================================================================
 
         public Expression ParseExpression(int precedence = 0)
@@ -126,6 +126,89 @@ namespace n9.core
             if (infixParselets.ContainsKey(type) == false)
                 return 0;
             return infixParselets[LookAhead(0).Type].Precedence;
+        }
+
+        // =====================================================================
+        //  Statement Parsing
+        // =====================================================================
+
+        public Statement ParseStatement(bool toplevel = false)
+        {
+            Token first = LookAhead(0);
+            switch (first.Type)
+            {
+                case TokenType.Id:
+                {
+                    Token second = LookAhead(1);
+                    switch (second.Type)
+                    {
+                        case TokenType.Colon:
+                        {
+                            var decl = ParseVariableDeclaration();
+                            Consume(TokenType.Semi);
+                            return decl;
+                        }
+                    }
+
+                    break;
+                }
+                case TokenType.Struct:
+                    return ParseStructDeclaration();
+
+            }
+
+            return null;
+        }
+
+        public TypeDeclaration ParseTypeDeclaration()
+        {
+            var name = Consume(TokenType.Id);
+            // TODO: more complex stuff
+            return new TypeDeclaration { Name = name.Text };
+        }
+
+        public VariableDeclaration ParseVariableDeclaration()
+        {
+            var name = Consume(TokenType.Id);
+            Consume(TokenType.Colon);
+
+            var decl = new VariableDeclaration();
+            decl.Name = name.Text;
+
+            // Now we either have to parse a type, or the type may be inferred.
+            
+            if (Match(TokenType.Equals)) 
+            {
+                // Invoked type-inference syntax
+
+                decl.Type = TypeDeclaration.Auto;
+                decl.InitializationExpression = ParseExpression();
+            } else {
+                // type-specified syntax. May or may not have an initializer.
+
+                decl.Type = ParseTypeDeclaration();
+                if (Match(TokenType.Equals))
+                    decl.InitializationExpression = ParseExpression();
+            }
+            return decl;
+        }
+
+        public StructDeclaration ParseStructDeclaration()
+        {
+            Consume(TokenType.Struct);
+            var name = Consume(TokenType.Id);
+            Consume(TokenType.LCurly);
+
+            var structDecl = new StructDeclaration { Name = name.Text };
+
+            while (true)
+            {
+                if (Match(TokenType.RCurly))
+                    return structDecl;
+
+                structDecl.Members.Add(ParseVariableDeclaration());
+                Consume(TokenType.Semi);
+            }
         }
     }
 }

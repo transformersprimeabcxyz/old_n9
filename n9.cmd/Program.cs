@@ -14,8 +14,20 @@ namespace n9.cmd
             Console.WriteLine(Parser.FromString("(5+-3)*2").ParseExpression());
 
             Console.WriteLine(Parser.FromString("1/2.").ParseExpression());
+            Console.WriteLine(Parser.FromString("a()()").ParseExpression());
 
-            var expr = Parser.FromString("2(foo)").ParseExpression();
+            Console.WriteLine(Parser.FromString("i : int;").ParseStatement());
+            Console.WriteLine(Parser.FromString("x : string;").ParseStatement());
+            Console.WriteLine(Parser.FromString("x : int = 2;").ParseStatement());
+            Console.WriteLine(Parser.FromString("x : int = 2/1;").ParseStatement());
+            Console.WriteLine(Parser.FromString("x := 2;").ParseStatement());
+
+            Console.WriteLine(Parser.FromString("struct test {}").ParseStatement());
+            Console.WriteLine(Parser.FromString("struct test { i:=5; }").ParseStatement());
+            Console.WriteLine(Parser.FromString("struct test { i:int=5; }").ParseStatement());
+            Console.WriteLine(Parser.FromString("struct test { i:int=5; f:=1.0f; }").ParseStatement());
+
+            var expr = Parser.FromString("a()()").ParseExpression();
             Console.WriteLine("---");
 
 		}
