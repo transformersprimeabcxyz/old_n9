@@ -100,4 +100,14 @@ namespace n9.core
             return sb.ToString();
         }
     }
+
+    public class ReturnStatement : Statement
+    {
+        public Expression Expr;
+        
+        public override string ToString()
+        {
+            return "return " + Expr + ";";
+        }
+    }
 }

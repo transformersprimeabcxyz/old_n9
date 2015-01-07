@@ -133,6 +133,7 @@ namespace n9.core
         //  Statement Parsing
         // =====================================================================
 
+        // TODO: differentiate toplevel statements from within-code statements.
         public Statement ParseStatement(bool toplevel = false)
         {
             Token first = LookAhead(0);
@@ -157,6 +158,8 @@ namespace n9.core
                     return ParseStructDeclaration();
                 case TokenType.Func:
                     return ParseFuncDeclaration();
+                case TokenType.Return:
+                    return ParseReturnStatement();
             }
 
             return null;
@@ -238,6 +241,14 @@ namespace n9.core
             }
 
             return decl;
+        }
+
+        public ReturnStatement ParseReturnStatement()
+        {
+            Consume(TokenType.Return);
+            var stmt = new ReturnStatement { Expr = ParseExpression() };
+            Consume(TokenType.Semi);
+            return stmt;
         }
     }
 }

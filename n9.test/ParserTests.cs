@@ -113,15 +113,28 @@ namespace n9.test
 
             decl = Parser.FromString(@"
 
-                func foo(i:int, s:string) : bool 
+                func foo(i:int, s:string) : string
                 {
                     a:=5;
-                    c:=""Hello"";
+                    return ""Hello"";
                 }
 
             ").ParseStatement() as FuncDeclaration;
             Assert.IsTrue(decl.Body.Count == 2);
             Assert.IsTrue(decl.Body[0] is VariableDeclaration);
+            Assert.IsTrue(decl.Body[1] is ReturnStatement);
+        }
+
+        [TestMethod]
+        public void Parser_CodeStatements()
+        {
+            var stmt = Parser.FromString("return 42;").ParseStatement() as ReturnStatement;
+            Assert.IsTrue(stmt is ReturnStatement);
+            Assert.IsTrue(stmt.Expr is IntLiteralExpr);
+
+            stmt = Parser.FromString("return a+b;").ParseStatement() as ReturnStatement;
+            Assert.IsTrue(stmt.Expr is BinaryOperatorExpr);
+
         }
 
         static void ExprParseTest(string source, string output)

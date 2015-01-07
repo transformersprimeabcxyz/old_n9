@@ -422,6 +422,7 @@ namespace n9.core
 
 			keywords["struct"] = TokenType.Struct;
 			keywords["func"] = TokenType.Func;
+            keywords["return"] = TokenType.Return;
 		}
     }
 
@@ -489,6 +490,8 @@ namespace n9.core
 
         Func,
         Struct,
+
+        Return,
 
         Bang,
         Dot,
