@@ -30,33 +30,6 @@ namespace n9.test
             ExprParseTest("a()()", "a()()");
         }
 
-        static void ExprParseTest(string source, string output)
-        {
-            var expr = Parser.FromString(source).ParseExpression().ToString();
-            Assert.IsTrue(output == expr);
-        }
-
-        static void StmtParseTest(string source, string output)
-        {
-            var expr = Parser.FromString(source).ParseStatement().ToString();
-            Assert.IsTrue(output == expr);
-        }
-
-        void AssertException(Action e)
-        {
-            bool failed = false;
-            try
-            {
-                e();
-            }
-            catch
-            {
-                failed = true;
-            }
-            Assert.IsTrue(failed);
-        }
-
-
         [TestMethod]
         public void Parser_VariableDeclarations()
         {
@@ -79,11 +52,11 @@ namespace n9.test
             AssertException(() => Parser.FromString("i := ;").ParseStatement()); // Missing initialization expression in inference syntax
             AssertException(() => Parser.FromString("i : ;").ParseStatement()); // missing type specifier
 
-            StmtParseTest("i : int;", "i : int");
-            StmtParseTest("i : int = 5;", "i : int = 5");
-            StmtParseTest("i := 5;", "i : (auto) = 5");
-            StmtParseTest("i := (2*5);", "i : (auto) = (2 Asterisk 5)");
-            StmtParseTest("i : int = (2*5);", "i : int = (2 Asterisk 5)");
+            StmtParseTest("i : int;", "i: int");
+            StmtParseTest("i : int = 5;", "i: int = 5");
+            StmtParseTest("i := 5;", "i: (auto) = 5");
+            StmtParseTest("i := (2*5);", "i: (auto) = (2 Asterisk 5)");
+            StmtParseTest("i : int = (2*5);", "i: int = (2 Asterisk 5)");
         }
 
         [TestMethod]
@@ -113,27 +86,68 @@ namespace n9.test
             Assert.IsTrue(decl.Members[1].Type.Name == "string");
             Assert.IsTrue(decl.Members[1].InitializationExpression == null);
         }
-        
-        //[TestMethod]
-        //public void Parser_Struct()
-        //{
-        //    var stmts = OldParser.FromString("struct foo { }").Parse();
-        //    Assert.IsTrue(stmts.Count == 1);
-        //    Assert.IsTrue(stmts[0] is StructDeclaration);
-        //    var sd = (StructDeclaration) stmts[0];
-        //    Assert.IsTrue(sd.Name == "foo");
-        //    Assert.IsTrue(sd.Members.Count == 0);
 
-        //    stmts = OldParser.FromString("struct foo { i : int; str : string; }").Parse();
-        //    Assert.IsTrue(stmts.Count == 1);
-        //    sd = (StructDeclaration)stmts[0];
-        //    Assert.IsTrue(sd.Name == "foo");
-        //    Assert.IsTrue(sd.Members.Count == 2);
-        //    Assert.IsTrue(sd.Members[0].MemberName == "i");
-        //    Assert.IsTrue(sd.Members[0].Type == "int");
-        //    Assert.IsTrue(sd.Members[1].MemberName == "str");
-        //    Assert.IsTrue(sd.Members[1].Type == "string");
-        //}
+        [TestMethod]
+        public void Parser_FuncDeclarations()
+        {
+            var decl = Parser.FromString("func foo() {}").ParseStatement() as FuncDeclaration;
+            Assert.IsTrue(decl is FuncDeclaration);
+            Assert.IsTrue(decl.Name == "foo");
+            Assert.IsTrue(decl.Parameters.Count == 0);
+            Assert.IsTrue(decl.Body.Count == 0);
+            Assert.IsTrue(decl.ReturnType == null);
+
+            decl = Parser.FromString("func foo(i:int) {}").ParseStatement() as FuncDeclaration;
+            Assert.IsTrue(decl.Parameters.Count == 1);
+            Assert.IsTrue(decl.Parameters[0].Name == "i");
+            Assert.IsTrue(decl.Parameters[0].Type.Name == "int");
+
+            decl = Parser.FromString("func foo(i:int, s:string) {}").ParseStatement() as FuncDeclaration;
+            Assert.IsTrue(decl.Parameters.Count == 2);
+            Assert.IsTrue(decl.Parameters[1].Name == "s");
+            Assert.IsTrue(decl.Parameters[1].Type.Name == "string");
+
+            decl = Parser.FromString("func foo(i:int, s:string) : bool {}").ParseStatement() as FuncDeclaration;
+            Assert.IsTrue(decl.Parameters.Count == 2);
+            Assert.IsTrue(decl.ReturnType.Name == "bool");
+
+            decl = Parser.FromString(@"
+
+                func foo(i:int, s:string) : bool 
+                {
+                    a:=5;
+                    c:=""Hello"";
+                }
+
+            ").ParseStatement() as FuncDeclaration;
+            Assert.IsTrue(decl.Body.Count == 2);
+            Assert.IsTrue(decl.Body[0] is VariableDeclaration);
+        }
+
+        static void ExprParseTest(string source, string output)
+        {
+            var expr = Parser.FromString(source).ParseExpression().ToString();
+            Assert.IsTrue(output == expr);
+        }
+
+        static void StmtParseTest(string source, string output)
+        {
+            var expr = Parser.FromString(source).ParseStatement().ToString();
+            Assert.IsTrue(output == expr);
+        }
+
+        void AssertException(Action e)
+        {
+            bool failed = false;
+            try
+            {
+                e();
+            }
+            catch
+            {
+                failed = true;
+            }
+            Assert.IsTrue(failed);
+        }
 	}
 }
-

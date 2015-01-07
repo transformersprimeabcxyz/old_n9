@@ -68,7 +68,7 @@ namespace n9.core
                     return new FloatLiteralExpr { Literal = negatedFloat };
 
                 default: 
-                    throw new Exception("The compiler doesnt know how to unary - this expression type yet");
+                    throw new Exception("The compiler doesnt know how to unary minus this expression type yet");
             }
         }
     }

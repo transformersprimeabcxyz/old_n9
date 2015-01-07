@@ -155,7 +155,8 @@ namespace n9.core
                 }
                 case TokenType.Struct:
                     return ParseStructDeclaration();
-
+                case TokenType.Func:
+                    return ParseFuncDeclaration();
             }
 
             return null;
@@ -200,16 +201,43 @@ namespace n9.core
             var name = Consume(TokenType.Id);
             Consume(TokenType.LCurly);
 
-            var structDecl = new StructDeclaration { Name = name.Text };
+            var decl = new StructDeclaration { Name = name.Text };
 
-            while (true)
+            while (!Match(TokenType.RCurly))
             {
-                if (Match(TokenType.RCurly))
-                    return structDecl;
-
-                structDecl.Members.Add(ParseVariableDeclaration());
+                decl.Members.Add(ParseVariableDeclaration());
                 Consume(TokenType.Semi);
             }
+            return decl;
+        }
+
+        public FuncDeclaration ParseFuncDeclaration()
+        {
+            Consume(TokenType.Func);
+            var name = Consume(TokenType.Id);
+            Consume(TokenType.LParen);
+
+            var decl = new FuncDeclaration { Name = name.Text };
+
+            while (!Match(TokenType.RParen))
+            {
+                decl.Parameters.Add(ParseVariableDeclaration()); // TODO VariableDeclparse should not allow inferred types. and probably not initializers at first (they would eventually be default arguments)
+                Match(TokenType.Comma);
+            }
+
+            if (Match(TokenType.Colon))
+                decl.ReturnType = ParseTypeDeclaration();
+
+            // TODO function prototypes, extern/ffi decls? export decls? visibility?
+
+            Consume(TokenType.LCurly);
+
+            while (!Match(TokenType.RCurly))
+            {
+                decl.Body.Add(ParseStatement());
+            }
+
+            return decl;
         }
     }
 }

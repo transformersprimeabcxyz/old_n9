@@ -22,14 +22,12 @@ namespace n9.cmd
             Console.WriteLine(Parser.FromString("x : int = 2/1;").ParseStatement());
             Console.WriteLine(Parser.FromString("x := 2;").ParseStatement());
 
-            Console.WriteLine(Parser.FromString("struct test {}").ParseStatement());
-            Console.WriteLine(Parser.FromString("struct test { i:=5; }").ParseStatement());
-            Console.WriteLine(Parser.FromString("struct test { i:int=5; }").ParseStatement());
-            Console.WriteLine(Parser.FromString("struct test { i:int=5; f:=1.0f; }").ParseStatement());
+            Console.WriteLine(Parser.FromString(@"struct test {}").ParseStatement());
+            Console.WriteLine(Parser.FromString(@"struct test { i:=5; }").ParseStatement());
+            Console.WriteLine(Parser.FromString(@"struct test { i:int=5; }").ParseStatement());
+            Console.WriteLine(Parser.FromString(@"struct test { i:int=5; f:=1.0f; test:=""Hello""; }").ParseStatement());
 
-            var expr = Parser.FromString("a()()").ParseExpression();
-            Console.WriteLine("---");
-
+            Console.WriteLine(Parser.FromString(@"func a() { a:=5; b:=""hello""; } ").ParseStatement());
 		}
 	}
 }

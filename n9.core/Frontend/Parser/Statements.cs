@@ -29,8 +29,8 @@ namespace n9.core
         public override string ToString()
         {
             if (InitializationExpression == null)
-                return Name + " : " + Type;
-            return Name + " : " + Type + " = " + InitializationExpression;
+                return Name + ": " + Type;
+            return Name + ": " + Type + " = " + InitializationExpression;
         }
     }
 
@@ -49,10 +49,53 @@ namespace n9.core
             foreach (var member in Members)
             {
                 sb.Append("    ");
-                sb.Append(member.ToString());
+                sb.Append(member);
                 sb.Append("\n");
             }
 
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+    }
+
+    public class FuncDeclaration : Statement
+    {
+        public string Name;
+        public List<VariableDeclaration> Parameters = new List<VariableDeclaration>();
+        public TypeDeclaration ReturnType;
+        public List<Statement> Body = new List<Statement>();
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("func ");
+            sb.Append(Name);
+            
+            sb.Append("(");
+            bool first = true;
+            foreach (var p in Parameters)
+            {
+                if (!first) 
+                    sb.Append(", ");
+                sb.Append(p);
+                first = false;
+            }
+
+            sb.Append(")");
+            if (ReturnType != null)
+            {
+                sb.Append(" : ");
+                sb.Append(ReturnType);
+                sb.Append("\n");
+            }
+
+            sb.Append("{\n");
+            foreach (var stmt in Body)
+            {
+                sb.Append("    ");
+                sb.Append(stmt);
+                sb.Append("\n");
+            }
             sb.Append("}\n");
             return sb.ToString();
         }
