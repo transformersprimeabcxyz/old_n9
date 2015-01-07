@@ -65,7 +65,7 @@ namespace n9.test
             Assert.IsTrue(decl.Name == "i");
             Assert.IsTrue(decl.Type.Name == "(auto)");
             Assert.IsTrue(decl.InitializationExpression is IntLiteralExpr);
-            Assert.IsTrue((decl.InitializationExpression as IntLiteralExpr).IntLiteral.IntegerLiteral == 5);
+            Assert.IsTrue((decl.InitializationExpression as IntLiteralExpr).Literal.IntegerLiteral == 5);
 
             decl = Parser.FromString("i : int;").ParseStatement() as VariableDeclaration;
             Assert.IsTrue(decl.Type.Name == "int");

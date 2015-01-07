@@ -24,7 +24,7 @@ namespace n9.core
     {
         public override Expression Parse(Parser p, Token t)
         {
-            return new IntLiteralExpr { IntLiteral = t };
+            return new IntLiteralExpr { Literal = t };
         }
     }
 
@@ -34,7 +34,17 @@ namespace n9.core
     {
         public override Expression Parse(Parser p, Token t)
         {
-            return new FloatLiteralExpr { FloatLiteral = t };
+            return new FloatLiteralExpr { Literal = t };
+        }
+    }
+
+    // =====================================================
+
+    public class StringLiteralParselet : PrefixParselet
+    {
+        public override Expression Parse(Parser p, Token t)
+        {
+            return new StringLiteralExpr { Literal = t };
         }
     }
         
@@ -50,12 +60,12 @@ namespace n9.core
                 case TokenType.IntLiteral:
                     var negatedInt = right.Clone();
                     negatedInt.IntegerLiteral = -negatedInt.IntegerLiteral;
-                    return new IntLiteralExpr { IntLiteral = negatedInt };
+                    return new IntLiteralExpr { Literal = negatedInt };
 
                 case TokenType.FloatLiteral:
                     var negatedFloat = right.Clone();
                     negatedFloat.FloatLiteral = -negatedFloat.FloatLiteral;
-                    return new FloatLiteralExpr { FloatLiteral = negatedFloat };
+                    return new FloatLiteralExpr { Literal = negatedFloat };
 
                 default: 
                     throw new Exception("The compiler doesnt know how to unary - this expression type yet");

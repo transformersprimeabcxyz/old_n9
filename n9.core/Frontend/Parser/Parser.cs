@@ -39,6 +39,7 @@ namespace n9.core
             Register(TokenType.Id, new NameParselet(), 0);
             Register(TokenType.IntLiteral, new IntLiteralParselet(), 0);
             Register(TokenType.FloatLiteral, new FloatLiteralParselet(), 0);
+            Register(TokenType.StringLiteral, new StringLiteralParselet(), 0);
             Register(TokenType.Minus, new PrefixMinusParselet(), 0);
             Register(TokenType.LParen, new PrefixParenParselet(), 0);
 

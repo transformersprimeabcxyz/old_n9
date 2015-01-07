@@ -24,11 +24,11 @@ namespace n9.core
 
     public class IntLiteralExpr : Expression
     {
-        public Token IntLiteral;
+        public Token Literal;
 
         public override string ToString()
         {
-            return IntLiteral.IntegerLiteral.ToString();
+            return Literal.IntegerLiteral.ToString();
         }
     }
 
@@ -36,18 +36,30 @@ namespace n9.core
 
     public class FloatLiteralExpr : Expression
     {
-        public Token FloatLiteral;
+        public Token Literal;
 
         public override string ToString()
         {
             var suffix = "";
-            switch (FloatLiteral.NumberLiteralClass)
+            switch (Literal.NumberLiteralClass)
             {
                 case NumberLiteralClass.Float32: suffix = "f"; break;
                 case NumberLiteralClass.Float64: suffix = "d"; break;
                 case NumberLiteralClass.Decimal: suffix = "m"; break;
             }
-            return FloatLiteral.FloatLiteral.ToString() + suffix;
+            return Literal.FloatLiteral.ToString() + suffix;
+        }
+    }
+
+    // =====================================================
+
+    public class StringLiteralExpr : Expression
+    {
+        public Token Literal;
+
+        public override string ToString()
+        {
+            return "\""+Literal.StringLiteral+"\"";
         }
     }
 
