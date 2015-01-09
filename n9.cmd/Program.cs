@@ -30,6 +30,8 @@ namespace n9.cmd
             Console.WriteLine(Parser.FromString(@"func a() { a:=5; b:=""hello""; } ").ParseStatement());
 
             Console.WriteLine(Parser.FromString(@"return a+b;").ParseStatement());
+
+            Console.WriteLine(Parser.FromString(@"i = 0;").ParseStatement());
 		}
 	}
 }

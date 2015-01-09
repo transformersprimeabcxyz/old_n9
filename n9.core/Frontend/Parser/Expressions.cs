@@ -101,4 +101,17 @@ namespace n9.core
             return sb.ToString();
         }
     }
+
+    // =====================================================
+
+    public class AssignExpr : Expression
+    {
+        public Expression Left;
+        public Expression Right;
+
+        public override string ToString()
+        {
+            return Left + " = " + Right;
+        }
+    }
 }

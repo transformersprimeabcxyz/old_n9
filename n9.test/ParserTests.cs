@@ -128,13 +128,22 @@ namespace n9.test
         [TestMethod]
         public void Parser_CodeStatements()
         {
-            var stmt = Parser.FromString("return 42;").ParseStatement() as ReturnStatement;
-            Assert.IsTrue(stmt is ReturnStatement);
-            Assert.IsTrue(stmt.Expr is IntLiteralExpr);
+            var s1 = Parser.FromString("return 42;").ParseStatement() as ReturnStatement;
+            Assert.IsTrue(s1 is ReturnStatement);
+            Assert.IsTrue(s1.Expr is IntLiteralExpr);
 
-            stmt = Parser.FromString("return a+b;").ParseStatement() as ReturnStatement;
-            Assert.IsTrue(stmt.Expr is BinaryOperatorExpr);
+            s1 = Parser.FromString("return a+b;").ParseStatement() as ReturnStatement;
+            Assert.IsTrue(s1.Expr is BinaryOperatorExpr);
 
+            var s2 = Parser.FromString("i = 0;").ParseStatement() as AssignStatement;
+            Assert.IsTrue(s2 is AssignStatement);
+            Assert.IsTrue(s2.AssignExpr.Left is NameExpr);
+            Assert.IsTrue(s2.AssignExpr.Right is IntLiteralExpr);
+
+            s2 = Parser.FromString("i = a + (x * y);").ParseStatement() as AssignStatement;
+            Assert.IsTrue(s2 is AssignStatement);
+            Assert.IsTrue(s2.AssignExpr.Left is NameExpr);
+            Assert.IsTrue(s2.AssignExpr.Right is BinaryOperatorExpr);
         }
 
         static void ExprParseTest(string source, string output)

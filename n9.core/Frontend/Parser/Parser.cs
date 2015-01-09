@@ -44,6 +44,7 @@ namespace n9.core
             Register(TokenType.LParen, new PrefixParenParselet(), 0);
 
             // Infix operators
+            Register(TokenType.Equals, new AssignParselet(), 50);
             Register(TokenType.Plus, new BinaryOperationParselet(), 50);
             Register(TokenType.Minus, new BinaryOperationParselet(), 50);
             Register(TokenType.Asterisk, new BinaryOperationParselet(), 60);
@@ -133,7 +134,7 @@ namespace n9.core
         //  Statement Parsing
         // =====================================================================
 
-        // TODO: differentiate toplevel statements from within-code statements.
+        // TODO: differentiate toplevel statements from within-code statements. (?)
         public Statement ParseStatement(bool toplevel = false)
         {
             Token first = LookAhead(0);
@@ -162,17 +163,23 @@ namespace n9.core
                     return ParseReturnStatement();
             }
 
+            // If we are still here, lets try parsing an expression.
+            var exp = ParseExpression();
+            if (exp is AssignExpr)
+                return ParseAssignStatement(exp as AssignExpr);
+         
+
             return null;
         }
 
-        public TypeDeclaration ParseTypeDeclaration()
+        TypeDeclaration ParseTypeDeclaration()
         {
             var name = Consume(TokenType.Id);
             // TODO: more complex stuff
             return new TypeDeclaration { Name = name.Text };
         }
 
-        public VariableDeclaration ParseVariableDeclaration()
+        VariableDeclaration ParseVariableDeclaration()
         {
             var name = Consume(TokenType.Id);
             Consume(TokenType.Colon);
@@ -198,7 +205,7 @@ namespace n9.core
             return decl;
         }
 
-        public StructDeclaration ParseStructDeclaration()
+        StructDeclaration ParseStructDeclaration()
         {
             Consume(TokenType.Struct);
             var name = Consume(TokenType.Id);
@@ -214,7 +221,7 @@ namespace n9.core
             return decl;
         }
 
-        public FuncDeclaration ParseFuncDeclaration()
+        FuncDeclaration ParseFuncDeclaration()
         {
             Consume(TokenType.Func);
             var name = Consume(TokenType.Id);
@@ -243,12 +250,18 @@ namespace n9.core
             return decl;
         }
 
-        public ReturnStatement ParseReturnStatement()
+        ReturnStatement ParseReturnStatement()
         {
             Consume(TokenType.Return);
             var stmt = new ReturnStatement { Expr = ParseExpression() };
             Consume(TokenType.Semi);
             return stmt;
+        }
+
+        AssignStatement ParseAssignStatement(AssignExpr expr)
+        {
+            Consume(TokenType.Semi);
+            return new AssignStatement { AssignExpr = expr };
         }
     }
 }

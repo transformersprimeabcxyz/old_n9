@@ -110,4 +110,14 @@ namespace n9.core
             return "return " + Expr + ";";
         }
     }
+
+    public class AssignStatement : Statement
+    {
+        public AssignExpr AssignExpr;
+
+        public override string ToString()
+        {
+            return AssignExpr + ";";
+        }
+    }
 }

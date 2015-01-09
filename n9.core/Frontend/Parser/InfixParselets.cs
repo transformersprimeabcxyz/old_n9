@@ -45,4 +45,21 @@
             return exp;
         }
     }
+
+    // ======================================================
+
+    public class AssignParselet : InfixParselet
+    {
+        public override Expression Parse(Parser p, Expression left, Token t)
+        {
+            // Assignments are right-associative. a=b=c will be parsed as a=(b=c).
+            // The -1 on "Precedence-1" achieves the right-associativity.
+            // TODO: verify that Left expression is an LValue. Maybe that's the binder's job.
+            return new AssignExpr
+            {
+               Left = left,
+               Right = p.ParseExpression(Precedence - 1)
+            };
+        }
+    }
 }
