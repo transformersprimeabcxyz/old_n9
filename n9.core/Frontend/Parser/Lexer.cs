@@ -354,23 +354,44 @@ namespace n9.core
                             };
                         }
                     }
-                
-                    if (ch == '=') return new Token { Type = TokenType.Equals,   Position = pos, Text = "=" };
-                    if (ch == '+') return new Token { Type = TokenType.Plus,     Position = pos, Text = "+" };
-                    if (ch == '-') return new Token { Type = TokenType.Minus,    Position = pos, Text = "-" };
-                    if (ch == '*') return new Token { Type = TokenType.Asterisk, Position = pos, Text = "*" };
 
-                    if (ch == '!') return new Token { Type = TokenType.Bang,     Position = pos, Text = "!" };
-                    if (ch == '.') return new Token { Type = TokenType.Dot,      Position = pos, Text = "." };
-                    if (ch == ',') return new Token { Type = TokenType.Comma,    Position = pos, Text = "," };
-                    if (ch == ':') return new Token { Type = TokenType.Colon,    Position = pos, Text = ":" };
-                    if (ch == ';') return new Token { Type = TokenType.Semi,     Position = pos, Text = ";" };
-                    if (ch == '(') return new Token { Type = TokenType.LParen,   Position = pos, Text = "(" };
-                    if (ch == ')') return new Token { Type = TokenType.RParen,   Position = pos, Text = ")" };
-                    if (ch == '{') return new Token { Type = TokenType.LCurly,   Position = pos, Text = "{" };
-                    if (ch == '}') return new Token { Type = TokenType.RCurly,   Position = pos, Text = "}" };
-                    if (ch == '[') return new Token { Type = TokenType.LBracket, Position = pos, Text = "[" };
-                    if (ch == ']') return new Token { Type = TokenType.RBracket, Position = pos, Text = "]" };
+                    ch2 = Peek();
+                    switch (ch)
+                    {
+                        case '=':
+                            if (ch2 == '=') { Read(); return new Token { Type = TokenType.Equality, Position = pos, Text = "==" }; }
+                            return new Token { Type = TokenType.Equals,   Position = pos, Text = "=" };
+                        case '!':
+                            if (ch2 == '=') { Read(); return new Token { Type = TokenType.Inequality, Position = pos, Text = "!=" }; }
+                            return new Token { Type = TokenType.Bang, Position = pos, Text = "!" };
+                        case '<':
+                            if (ch2 == '=') { Read(); return new Token { Type = TokenType.LessThanEqual, Position = pos, Text = "<=" }; }
+                            return new Token { Type = TokenType.LessThan, Position = pos, Text = "<" };
+                        case '>':
+                            if (ch2 == '=') { Read(); return new Token { Type = TokenType.GreaterThanEqual, Position = pos, Text = ">=" }; }
+                            return new Token { Type = TokenType.GreaterThan, Position = pos, Text = ">" };
+                        case '&':
+                            if (ch2 == '&') { Read(); return new Token { Type = TokenType.LogicalAnd, Position = pos, Text = "&&" }; }
+                            return new Token { Type = TokenType.BitAnd, Position = pos, Text = "&" };
+                        case '|':
+                            if (ch2 == '|') { Read(); return new Token { Type = TokenType.LogicalOr, Position = pos, Text = "||" }; }
+                            return new Token { Type = TokenType.BitOr, Position = pos, Text = "|" };
+
+                        case '+': return new Token { Type = TokenType.Plus,     Position = pos, Text = "+" };
+                        case '-': return new Token { Type = TokenType.Minus,    Position = pos, Text = "-" };
+                        case '*': return new Token { Type = TokenType.Asterisk, Position = pos, Text = "*" };
+                        
+                        case '.': return new Token { Type = TokenType.Dot,      Position = pos, Text = "." };
+                        case ',': return new Token { Type = TokenType.Comma,    Position = pos, Text = "," };
+                        case ':': return new Token { Type = TokenType.Colon,    Position = pos, Text = ":" };
+                        case ';': return new Token { Type = TokenType.Semi,     Position = pos, Text = ";" };
+                        case '(': return new Token { Type = TokenType.LParen,   Position = pos, Text = "(" };
+                        case ')': return new Token { Type = TokenType.RParen,   Position = pos, Text = ")" };
+                        case '{': return new Token { Type = TokenType.LCurly,   Position = pos, Text = "{" };
+                        case '}': return new Token { Type = TokenType.RCurly,   Position = pos, Text = "}" };
+                        case '[': return new Token { Type = TokenType.LBracket, Position = pos, Text = "[" };
+                        case ']': return new Token { Type = TokenType.RBracket, Position = pos, Text = "]" };
+                    }
 
                     if (ch == '"') // string literals
                     {
@@ -510,6 +531,18 @@ namespace n9.core
         Minus,
         Asterisk,
         Divslash,
+
+        Equality,
+        Inequality,
+        LessThan,
+        LessThanEqual,
+        GreaterThan,
+        GreaterThanEqual,
+        LogicalAnd,
+        LogicalOr,
+
+        BitAnd,
+        BitOr,
 
         EOF
     }

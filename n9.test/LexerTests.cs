@@ -117,6 +117,19 @@ namespace n9.test
         {
             var tokens = Tokenize("!.,(){}[]=+-*/:;");
             Assert.IsTrue(tokens.Count == 16);
+
+            tokens = Tokenize("== != > < >= <= && & || |");
+            Assert.IsTrue(tokens.Count == 10);
+            Assert.IsTrue(tokens[0].Type == TokenType.Equality);
+            Assert.IsTrue(tokens[1].Type == TokenType.Inequality);
+            Assert.IsTrue(tokens[2].Type == TokenType.GreaterThan);
+            Assert.IsTrue(tokens[3].Type == TokenType.LessThan);
+            Assert.IsTrue(tokens[4].Type == TokenType.GreaterThanEqual);
+            Assert.IsTrue(tokens[5].Type == TokenType.LessThanEqual);
+            Assert.IsTrue(tokens[6].Type == TokenType.LogicalAnd);
+            Assert.IsTrue(tokens[7].Type == TokenType.BitAnd);
+            Assert.IsTrue(tokens[8].Type == TokenType.LogicalOr);
+            Assert.IsTrue(tokens[9].Type == TokenType.BitOr);
         }
 
         [TestMethod]

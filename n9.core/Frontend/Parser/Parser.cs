@@ -33,7 +33,7 @@ namespace n9.core
             return new Parser { lexer = lx };
         }
 
-        Parser()
+        Parser() // http://javascript.crockford.com/tdop/tdop.html
         {
             // Prefix operators
             Register(TokenType.Id, new NameParselet(), 0);
@@ -44,6 +44,16 @@ namespace n9.core
             Register(TokenType.LParen, new PrefixParenParselet(), 0);
 
             // Infix operators
+            Register(TokenType.LogicalAnd, new BinaryOperationParselet(), 30); // TODO AND and OR should have different precedence. I think.
+            Register(TokenType.LogicalOr, new BinaryOperationParselet(), 30);
+
+            Register(TokenType.Equality, new BinaryOperationParselet(), 40);
+            Register(TokenType.Inequality, new BinaryOperationParselet(), 40);
+            Register(TokenType.LessThan, new BinaryOperationParselet(), 40);
+            Register(TokenType.LessThanEqual, new BinaryOperationParselet(), 40);
+            Register(TokenType.GreaterThan, new BinaryOperationParselet(), 40);
+            Register(TokenType.GreaterThanEqual, new BinaryOperationParselet(), 40);
+            
             Register(TokenType.Equals, new AssignParselet(), 50);
             Register(TokenType.Plus, new BinaryOperationParselet(), 50);
             Register(TokenType.Minus, new BinaryOperationParselet(), 50);

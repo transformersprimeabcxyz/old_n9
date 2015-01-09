@@ -32,6 +32,9 @@ namespace n9.cmd
             Console.WriteLine(Parser.FromString(@"return a+b;").ParseStatement());
 
             Console.WriteLine(Parser.FromString(@"i = 0;").ParseStatement());
+
+            Console.WriteLine(Parser.FromString(@"i == 1 + x >= 2").ParseExpression());
+            Console.WriteLine(Parser.FromString(@"i == 1 && x >= 2").ParseExpression());
 		}
 	}
 }
