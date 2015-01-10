@@ -443,6 +443,8 @@ namespace n9.core
 
 			keywords["struct"] = TokenType.Struct;
 			keywords["func"] = TokenType.Func;
+            keywords["if"] = TokenType.If;
+            keywords["else"] = TokenType.Else;
             keywords["while"] = TokenType.While;
             keywords["return"] = TokenType.Return;
 		}
@@ -513,6 +515,8 @@ namespace n9.core
         Func,
         Struct,
 
+        If,
+        Else,
         While,
         Return,
 

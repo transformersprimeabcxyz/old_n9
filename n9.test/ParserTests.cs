@@ -149,13 +149,13 @@ namespace n9.test
         [TestMethod]
         public void Parser_FlowControlStatements()
         {
-            var s1 = Parser.FromString("while (1) foo();").ParseStatement() as WhileStatement;
-            Assert.IsTrue(s1 is WhileStatement);
-            Assert.IsTrue(s1.ConditionalExpr is IntLiteralExpr);
-            Assert.IsTrue(s1.Body.Count == 1);
-            Assert.IsTrue(s1.Body[0] is CallStatement);
+            var _while = Parser.FromString("while (1) foo();").ParseStatement() as WhileStatement;
+            Assert.IsTrue(_while is WhileStatement);
+            Assert.IsTrue(_while.ConditionalExpr is IntLiteralExpr);
+            Assert.IsTrue(_while.Body.Count == 1);
+            Assert.IsTrue(_while.Body[0] is CallStatement);
 
-            s1 = Parser.FromString(@"
+            _while = Parser.FromString(@"
 
             while (i < Count)
             { 
@@ -164,11 +164,45 @@ namespace n9.test
             }
 
             ").ParseStatement() as WhileStatement;
-            Assert.IsTrue(s1 is WhileStatement);
-            Assert.IsTrue(s1.ConditionalExpr is BinaryOperatorExpr);
-            Assert.IsTrue(s1.Body.Count == 2);
-            Assert.IsTrue(s1.Body[0] is CallStatement);
-            Assert.IsTrue(s1.Body[1] is AssignStatement);
+            Assert.IsTrue(_while is WhileStatement);
+            Assert.IsTrue(_while.ConditionalExpr is BinaryOperatorExpr);
+            Assert.IsTrue(_while.Body.Count == 2);
+            Assert.IsTrue(_while.Body[0] is CallStatement);
+            Assert.IsTrue(_while.Body[1] is AssignStatement);
+
+            var _if = Parser.FromString("if (true) foo();").ParseStatement() as IfStatement;
+            Assert.IsTrue(_if is IfStatement);
+            Assert.IsTrue(_if.IfExpr is NameExpr); // TODO 'true' is currently a name, not a bool literal yet
+            Assert.IsTrue(_if.ThenBody.Count == 1);
+            Assert.IsTrue(_if.ThenBody[0] is CallStatement);
+            Assert.IsTrue(_if.ElseBody.Count == 0);
+
+            _if = Parser.FromString("if (i == 1) { foo(i); close(); }").ParseStatement() as IfStatement;
+            Assert.IsTrue(_if.IfExpr is BinaryOperatorExpr);
+            Assert.IsTrue(_if.ThenBody.Count == 2);
+
+            _if = Parser.FromString(@"if (a) foo(); else bar();").ParseStatement() as IfStatement;
+            Assert.IsTrue(_if.ThenBody.Count == 1);
+            Assert.IsTrue(_if.ElseBody.Count == 1);
+            Assert.IsTrue(_if.ElseBody[0] is CallStatement);
+            
+            _if = Parser.FromString(@"
+
+            if (a) 
+                foo(); 
+            else if (b) 
+                bar();
+            else 
+                baz();
+
+            ").ParseStatement() as IfStatement;
+            Assert.IsTrue(_if.ThenBody.Count == 1);
+            Assert.IsTrue(_if.ElseBody.Count == 1);
+            Assert.IsTrue(_if.ElseBody[0] is IfStatement);
+            var el1 = _if.ElseBody[0] as IfStatement;
+            Assert.IsTrue(el1.IfExpr is NameExpr);
+            Assert.IsTrue(el1.ThenBody.Count == 1);
+            Assert.IsTrue(el1.ElseBody.Count == 1);
         }
 
         static void ExprParseTest(string source, string output)

@@ -173,6 +173,8 @@ namespace n9.core
                     return ParseReturnStatement();
                 case TokenType.While:
                     return ParseWhileStatement();
+                case TokenType.If:
+                    return ParseIfStatement();
             }
 
             // If we are still here, lets try parsing an expression.
@@ -290,13 +292,35 @@ namespace n9.core
             Consume(TokenType.LParen);
             var stmt = new WhileStatement { ConditionalExpr = ParseExpression() };
             Consume(TokenType.RParen);
-            if (Match(TokenType.LCurly)) // begin block body
-                while (!Match(TokenType.RCurly))
-                    stmt.Body.Add(ParseStatement());
-            else 
-                stmt.Body.Add(ParseStatement());
+
+            ParseStatementOrBlock(stmt.Body);
+            // TODO the syntax "while(foo());" will fail. [ while(foo()) {} succeeds ]
 
             return stmt;
+        }
+
+        IfStatement ParseIfStatement()
+        {
+            Consume(TokenType.If);
+            Consume(TokenType.LParen);
+            var stmt = new IfStatement { IfExpr = ParseExpression() };
+            Consume(TokenType.RParen);
+
+            ParseStatementOrBlock(stmt.ThenBody);
+
+            if (Match(TokenType.Else))
+                ParseStatementOrBlock(stmt.ElseBody);
+
+            return stmt;
+        }
+
+        void ParseStatementOrBlock(List<Statement> list)
+        {
+            if (Match(TokenType.LCurly))
+                while (!Match(TokenType.RCurly))
+                    list.Add(ParseStatement());
+            else
+                list.Add(ParseStatement());
         }
     }
 }

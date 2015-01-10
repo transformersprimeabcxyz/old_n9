@@ -5,6 +5,13 @@ namespace n9.core
 {
     public abstract class Statement
     {
+        //public abstract void Print(StringBuilder buffer, int indentLevel = 0);
+        //public override string ToString()
+        //{
+        //    var sb = new StringBuilder();
+        //    Print(sb);
+        //    return sb.ToString();
+        //}
     }
 
     public class TypeDeclaration
@@ -129,6 +136,13 @@ namespace n9.core
         {
             return CallExpr + ";";
         }
+    }
+
+    public class IfStatement : Statement
+    {
+        public Expression IfExpr;
+        public List<Statement> ThenBody = new List<Statement>();
+        public List<Statement> ElseBody = new List<Statement>();
     }
 
     public class WhileStatement : Statement
