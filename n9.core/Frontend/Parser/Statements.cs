@@ -5,15 +5,33 @@ namespace n9.core
 {
     public abstract class Statement
     {
-        //public abstract void Print(StringBuilder buffer, int indentLevel = 0);
-        //public override string ToString()
-        //{
-        //    var sb = new StringBuilder();
-        //    Print(sb);
-        //    return sb.ToString();
-        //}
+        public abstract void Print(StringBuilder buffer, int indentLevel = 0);
+        
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            Print(sb);
+            return sb.ToString();
+        }
     }
 
+    static class BufferExt
+    {
+        public static void Append(this StringBuilder buffer, string str, int indentLevel)
+        {
+            for (int i = 0; i < indentLevel; i++)
+                buffer.Append("   ");
+            buffer.Append(str);
+        }
+
+        public static void Append(this StringBuilder buffer, object obj, int indentLevel)
+        {
+            for (int i = 0; i < indentLevel; i++)
+                buffer.Append("   ");
+            buffer.Append(obj.ToString());
+        }
+    }
+    
     public class TypeDeclaration
     {
         public string Name;
@@ -33,11 +51,24 @@ namespace n9.core
         public TypeDeclaration Type;
         public Expression InitializationExpression;
 
-        public override string ToString()
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            if (InitializationExpression == null)
-                return Name + ": " + Type;
-            return Name + ": " + Type + " = " + InitializationExpression;
+            buffer.Append(Name, indentLevel);
+            if (Type.Name == "(auto)")
+            {
+                buffer.Append(" := ");
+                buffer.Append(InitializationExpression);
+                buffer.Append(";\n");
+            } else {
+                buffer.Append(" : ");
+                buffer.Append(Type);
+                if (InitializationExpression != null) 
+                { 
+                    buffer.Append(" = ");
+                    buffer.Append(InitializationExpression);
+                }
+                buffer.Append(";\n");
+            }
         }
     }
 
@@ -46,22 +77,17 @@ namespace n9.core
         public string Name;
         public List<VariableDeclaration> Members = new List<VariableDeclaration>();
 
-        public override string ToString()
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            var sb = new StringBuilder();
-            sb.Append("struct ");
-            sb.Append(Name);
-            sb.Append("\n");
-            sb.Append("{\n");
+            buffer.Append("struct ", indentLevel);
+            buffer.Append(Name);
+            buffer.Append("\n");
+            buffer.Append("{\n", indentLevel); 
             foreach (var member in Members)
             {
-                sb.Append("    ");
-                sb.Append(member);
-                sb.Append("\n");
+                buffer.Append(member, indentLevel+1);
             }
-
-            sb.Append("}\n");
-            return sb.ToString();
+            buffer.Append("}\n", indentLevel);
         }
     }
 
@@ -72,49 +98,44 @@ namespace n9.core
         public TypeDeclaration ReturnType;
         public List<Statement> Body = new List<Statement>();
 
-        public override string ToString()
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            var sb = new StringBuilder();
-            sb.Append("func ");
-            sb.Append(Name);
-            
-            sb.Append("(");
+            buffer.Append("func ", indentLevel);
+            buffer.Append(Name);
+
+            buffer.Append("(");
             bool first = true;
             foreach (var p in Parameters)
             {
-                if (!first) 
-                    sb.Append(", ");
-                sb.Append(p);
+                if (!first)
+                    buffer.Append(", ");
+                buffer.Append(p);
                 first = false;
             }
 
-            sb.Append(")");
+            buffer.Append(")");
             if (ReturnType != null)
             {
-                sb.Append(" : ");
-                sb.Append(ReturnType);
-                sb.Append("\n");
+                buffer.Append(" : ");
+                buffer.Append(ReturnType);
             }
-
-            sb.Append("{\n");
+            buffer.Append("\n");
+            buffer.Append("{\n", indentLevel);
             foreach (var stmt in Body)
-            {
-                sb.Append("    ");
-                sb.Append(stmt);
-                sb.Append("\n");
-            }
-            sb.Append("}\n");
-            return sb.ToString();
+                stmt.Print(buffer, indentLevel + 1);
+            buffer.Append("}\n", indentLevel);
         }
     }
 
     public class ReturnStatement : Statement
     {
         public Expression Expr;
-        
-        public override string ToString()
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            return "return " + Expr + ";";
+            buffer.Append("return ", indentLevel);
+            buffer.Append(Expr);
+            buffer.Append(";\n");
         }
     }
 
@@ -122,9 +143,10 @@ namespace n9.core
     {
         public AssignExpr AssignExpr;
 
-        public override string ToString()
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            return AssignExpr + ";";
+            buffer.Append(AssignExpr, indentLevel);
+            buffer.Append(";\n");
         }
     }
 
@@ -132,9 +154,10 @@ namespace n9.core
     {
         public CallExpr CallExpr;
 
-        public override string ToString()
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            return CallExpr + ";";
+            buffer.Append(CallExpr, indentLevel);
+            buffer.Append(";\n");
         }
     }
 
@@ -143,6 +166,26 @@ namespace n9.core
         public Expression IfExpr;
         public List<Statement> ThenBody = new List<Statement>();
         public List<Statement> ElseBody = new List<Statement>();
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append("if (", indentLevel);
+            buffer.Append(IfExpr);
+            buffer.Append(")\n");
+            buffer.Append("{\n", indentLevel);
+
+            foreach (var stmt in ThenBody)
+                stmt.Print(buffer, indentLevel + 1);
+            buffer.Append("}", indentLevel);
+            if (ElseBody.Count > 0)
+            {
+                buffer.Append(" else {\n");
+                foreach (var stmt in ElseBody)
+                    stmt.Print(buffer, indentLevel + 1);
+                buffer.Append("}", indentLevel);
+            }
+            buffer.Append("\n");
+        }
     }
 
     public class WhileStatement : Statement
@@ -150,23 +193,17 @@ namespace n9.core
         public Expression ConditionalExpr;
         public List<Statement> Body = new List<Statement>();
 
-        public override string ToString()
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
-            var sb = new StringBuilder();
-            sb.Append("while (");
-            sb.Append(ConditionalExpr);
-            sb.Append(")\n");
-            sb.Append("{\n");
+            buffer.Append("while (", indentLevel);
+            buffer.Append(ConditionalExpr);
+            buffer.Append(")\n");
+            buffer.Append("{\n", indentLevel);
 
             foreach (var stmt in Body)
-            {
-                sb.Append("    ");
-                sb.Append(stmt);
-                sb.Append("\n");
-            }
+                stmt.Print(buffer, indentLevel + 1);
 
-            sb.Append("}\n");
-            return sb.ToString();
+            buffer.Append("}\n", indentLevel);
         }
     }
 }

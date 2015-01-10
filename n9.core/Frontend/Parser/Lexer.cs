@@ -415,7 +415,6 @@ namespace n9.core
                             throw new CompilationException(Diagnostic.Error("Unterminated string constant"));
                         Read(); //consume trailing "
                         string literal = strbuf.ToString();
-                        Console.WriteLine(literal);
                         return new Token { Type = TokenType.StringLiteral, Position = pos, StringLiteral = literal, Text = literal };
                         // TODO supporting A"strings" for ascii strings?
                         // TODO support wide strings????????????????? lame.
