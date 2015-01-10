@@ -2,7 +2,7 @@
 
 namespace n9.core
 {
-    public abstract class PrefixParselet
+    abstract class PrefixParselet
     {
         public int Precedence;
         public abstract Expression Parse(Parser p, Token t);
@@ -10,7 +10,7 @@ namespace n9.core
 
     // =====================================================
 
-    public class NameParselet : PrefixParselet
+    class NameParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)
         {
@@ -20,7 +20,7 @@ namespace n9.core
 
     // =====================================================
 
-    public class IntLiteralParselet : PrefixParselet
+    class IntLiteralParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)
         {
@@ -30,7 +30,7 @@ namespace n9.core
 
     // =====================================================
 
-    public class FloatLiteralParselet : PrefixParselet
+    class FloatLiteralParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)
         {
@@ -40,7 +40,7 @@ namespace n9.core
 
     // =====================================================
 
-    public class StringLiteralParselet : PrefixParselet
+    class StringLiteralParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)
         {
@@ -50,7 +50,7 @@ namespace n9.core
         
     // =====================================================
 
-    public class PrefixMinusParselet : PrefixParselet
+    class PrefixMinusParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)
         {
@@ -75,7 +75,7 @@ namespace n9.core
 
     // =====================================================
 
-    public class PrefixParenParselet : PrefixParselet
+    class PrefixParenParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)
         {

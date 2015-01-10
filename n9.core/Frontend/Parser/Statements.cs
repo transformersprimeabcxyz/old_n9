@@ -120,4 +120,39 @@ namespace n9.core
             return AssignExpr + ";";
         }
     }
+
+    public class CallStatement : Statement
+    {
+        public CallExpr CallExpr;
+
+        public override string ToString()
+        {
+            return CallExpr + ";";
+        }
+    }
+
+    public class WhileStatement : Statement
+    {
+        public Expression ConditionalExpr;
+        public List<Statement> Body = new List<Statement>();
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("while (");
+            sb.Append(ConditionalExpr);
+            sb.Append(")\n");
+            sb.Append("{\n");
+
+            foreach (var stmt in Body)
+            {
+                sb.Append("    ");
+                sb.Append(stmt);
+                sb.Append("\n");
+            }
+
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+    }
 }

@@ -146,6 +146,31 @@ namespace n9.test
             Assert.IsTrue(s2.AssignExpr.Right is BinaryOperatorExpr);
         }
 
+        [TestMethod]
+        public void Parser_FlowControlStatements()
+        {
+            var s1 = Parser.FromString("while (1) foo();").ParseStatement() as WhileStatement;
+            Assert.IsTrue(s1 is WhileStatement);
+            Assert.IsTrue(s1.ConditionalExpr is IntLiteralExpr);
+            Assert.IsTrue(s1.Body.Count == 1);
+            Assert.IsTrue(s1.Body[0] is CallStatement);
+
+            s1 = Parser.FromString(@"
+
+            while (i < Count)
+            { 
+                processFoo(i);
+                i = i + 1;
+            }
+
+            ").ParseStatement() as WhileStatement;
+            Assert.IsTrue(s1 is WhileStatement);
+            Assert.IsTrue(s1.ConditionalExpr is BinaryOperatorExpr);
+            Assert.IsTrue(s1.Body.Count == 2);
+            Assert.IsTrue(s1.Body[0] is CallStatement);
+            Assert.IsTrue(s1.Body[1] is AssignStatement);
+        }
+
         static void ExprParseTest(string source, string output)
         {
             var expr = Parser.FromString(source).ParseExpression().ToString();

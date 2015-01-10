@@ -171,14 +171,18 @@ namespace n9.core
                     return ParseFuncDeclaration();
                 case TokenType.Return:
                     return ParseReturnStatement();
+                case TokenType.While:
+                    return ParseWhileStatement();
             }
 
             // If we are still here, lets try parsing an expression.
             var exp = ParseExpression();
             if (exp is AssignExpr)
                 return ParseAssignStatement(exp as AssignExpr);
-         
+            if (exp is CallExpr)
+                return ParseCallStatement(exp as CallExpr);
 
+            // throw parse error
             return null;
         }
 
@@ -272,6 +276,27 @@ namespace n9.core
         {
             Consume(TokenType.Semi);
             return new AssignStatement { AssignExpr = expr };
+        }
+
+        CallStatement ParseCallStatement(CallExpr expr)
+        {
+            Consume(TokenType.Semi);
+            return new CallStatement { CallExpr = expr };
+        }
+
+        WhileStatement ParseWhileStatement()
+        {
+            Consume(TokenType.While);
+            Consume(TokenType.LParen);
+            var stmt = new WhileStatement { ConditionalExpr = ParseExpression() };
+            Consume(TokenType.RParen);
+            if (Match(TokenType.LCurly)) // begin block body
+                while (!Match(TokenType.RCurly))
+                    stmt.Body.Add(ParseStatement());
+            else 
+                stmt.Body.Add(ParseStatement());
+
+            return stmt;
         }
     }
 }

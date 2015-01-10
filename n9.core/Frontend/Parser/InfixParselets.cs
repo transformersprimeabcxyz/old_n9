@@ -1,6 +1,6 @@
 ﻿namespace n9.core
 {
-    public abstract class InfixParselet
+    abstract class InfixParselet
     {
         public int Precedence;
         public abstract Expression Parse(Parser p, Expression left, Token t);
@@ -8,7 +8,7 @@
 
     // ======================================================
 
-    public class BinaryOperationParselet : InfixParselet
+    class BinaryOperationParselet : InfixParselet
     {
         public override Expression Parse(Parser p, Expression left, Token t)
         {
@@ -23,7 +23,7 @@
 
     // ======================================================
 
-    public class CallParselet : InfixParselet
+    class CallParselet : InfixParselet
     {
         public override Expression Parse(Parser p, Expression left, Token t)
         {
@@ -48,7 +48,7 @@
 
     // ======================================================
 
-    public class AssignParselet : InfixParselet
+    class AssignParselet : InfixParselet
     {
         public override Expression Parse(Parser p, Expression left, Token t)
         {

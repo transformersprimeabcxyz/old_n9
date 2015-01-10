@@ -33,6 +33,9 @@ namespace n9.cmd
 
             Console.WriteLine(Parser.FromString(@"i = 0;").ParseStatement());
 
+            Console.WriteLine(Parser.FromString(@"while(true) a();").ParseStatement());
+            Console.WriteLine(Parser.FromString(@"while(true) { a(); b = 1+2; }").ParseStatement());
+
             Console.WriteLine(Parser.FromString(@"i == 1 + x >= 2").ParseExpression());
             Console.WriteLine(Parser.FromString(@"i == 1 && x >= 2").ParseExpression());
 		}

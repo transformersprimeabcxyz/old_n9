@@ -443,6 +443,7 @@ namespace n9.core
 
 			keywords["struct"] = TokenType.Struct;
 			keywords["func"] = TokenType.Func;
+            keywords["while"] = TokenType.While;
             keywords["return"] = TokenType.Return;
 		}
     }
@@ -512,6 +513,7 @@ namespace n9.core
         Func,
         Struct,
 
+        While,
         Return,
 
         Bang,
