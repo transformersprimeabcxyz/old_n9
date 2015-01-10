@@ -37,19 +37,17 @@ namespace n9.cmd
 
             Console.Write(Parser.FromString(@"
 
-            func a() : int 
+            func a(a:bool, b:bool) : int 
             { 
                 if (a)
                     foo();
                 else if (b)
                     bar();
                 else 
-                    baz();
+                    while (i < count)
+                        foo(i);
 
                 init();
-                while (i < count)
-                    foo(i);
-                a:=foo(); 
                 b:=""hello""; 
                 return 5/2;
             } 

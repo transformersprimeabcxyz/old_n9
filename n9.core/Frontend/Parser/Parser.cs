@@ -221,6 +221,15 @@ namespace n9.core
             return decl;
         }
 
+        MethodParameterDeclaration ParseMethodParameterDeclaration()
+        {
+            var name = Consume(TokenType.Id);
+            var decl = new MethodParameterDeclaration { Name = name.Text };
+            Consume(TokenType.Colon);
+            decl.Type = ParseTypeDeclaration();
+            return decl;
+        }
+
         StructDeclaration ParseStructDeclaration()
         {
             Consume(TokenType.Struct);
@@ -247,7 +256,7 @@ namespace n9.core
 
             while (!Match(TokenType.RParen))
             {
-                decl.Parameters.Add(ParseVariableDeclaration()); // TODO VariableDeclparse should not allow inferred types. and probably not initializers at first (they would eventually be default arguments)
+                decl.Parameters.Add(ParseMethodParameterDeclaration());
                 Match(TokenType.Comma);
             }
 

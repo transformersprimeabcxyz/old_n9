@@ -72,6 +72,19 @@ namespace n9.core
         }
     }
 
+    public class MethodParameterDeclaration : Statement
+    {
+        public string Name;
+        public TypeDeclaration Type;
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append(Name);
+            buffer.Append(": ");
+            buffer.Append(Type);
+        }
+    }
+
     public class StructDeclaration : Statement
     {
         public string Name;
@@ -94,7 +107,7 @@ namespace n9.core
     public class FuncDeclaration : Statement
     {
         public string Name;
-        public List<VariableDeclaration> Parameters = new List<VariableDeclaration>();
+        public List<MethodParameterDeclaration> Parameters = new List<MethodParameterDeclaration>();
         public TypeDeclaration ReturnType;
         public List<Statement> Body = new List<Statement>();
 
