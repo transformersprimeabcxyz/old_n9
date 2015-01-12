@@ -175,6 +175,8 @@ namespace n9.core
                     return ParseWhileStatement();
                 case TokenType.If:
                     return ParseIfStatement();
+                case TokenType.EOF:
+                    return null;
             }
 
             // If we are still here, lets try parsing an expression.
@@ -190,9 +192,25 @@ namespace n9.core
 
         TypeDeclaration ParseTypeDeclaration()
         {
-            var name = Consume(TokenType.Id);
-            // TODO: more complex stuff
-            return new TypeDeclaration { Name = name.Text };
+            var decl = new TypeDeclaration();
+            decl.Name = Consume(TokenType.Id).Text;
+            
+            // Check if its an array
+            if (Match(TokenType.LBracket))
+            {
+                if (Match(TokenType.RBracket))
+                    decl.UnsizedArray = true;
+                else
+                {
+                    var size = Consume(TokenType.IntLiteral);
+                    decl.SizedArray = true;
+                    decl.ArraySize = (int) size.IntegerLiteral;
+                    Consume(TokenType.RBracket);
+                }
+            }
+            if (Match(TokenType.Asterisk))
+                decl.Pointer = true;
+            return decl;
         }
 
         VariableDeclaration ParseVariableDeclaration()

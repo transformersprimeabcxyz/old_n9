@@ -35,11 +35,28 @@ namespace n9.core
     public class TypeDeclaration
     {
         public string Name;
-        // TODO.. other stuff, arrays, pointers, other modifiers or annotations
+        public bool UnsizedArray;
+        public bool SizedArray;
+        public bool Pointer;
+        public int ArraySize;
+
+        // TODO.. pointer-to-pointers, non-literal-sized arrays, other modifiers or annotations
 
         public override string ToString()
         {
-            return Name;
+            var sb = new StringBuilder();
+            sb.Append(Name);
+            if (UnsizedArray) 
+                sb.Append("[]");
+            if (SizedArray)
+            {
+                sb.Append("[");
+                sb.Append(ArraySize);
+                sb.Append("]");
+            }
+            if (Pointer)
+                sb.Append("*");
+            return sb.ToString();
         }
 
         public static TypeDeclaration Auto = new TypeDeclaration { Name = "(auto)" };

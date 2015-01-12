@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Frontend\Binder\Binder.cs" />
     <Compile Include="Frontend\Parser\Statements.cs" />
     <Compile Include="Frontend\Diagnostic.cs" />
     <Compile Include="Frontend\FileReader.cs" />
@@ -45,7 +46,7 @@
     <Compile Include="Frontend\Parser\InfixParselets.cs" />
     <Compile Include="Frontend\Parser\PrefixParselets.cs" />
     <Compile Include="Frontend\Parser\Parser.cs" />
-    <Compile Include="Frontend\Scope.cs" />
+    <Compile Include="Frontend\Binder\Scope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

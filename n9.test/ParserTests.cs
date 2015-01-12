@@ -31,6 +31,47 @@ namespace n9.test
         }
 
         [TestMethod]
+        public void Parser_TypeDeclarations()
+        {
+            var decl = Parser.FromString("i : int;").ParseStatement() as VariableDeclaration;
+            Assert.IsTrue(decl.Type.Name == "int");
+            Assert.IsTrue(decl.Type.Pointer == false);
+            Assert.IsTrue(decl.Type.UnsizedArray == false);
+            Assert.IsTrue(decl.Type.SizedArray == false);
+
+            decl = Parser.FromString("i : int*;").ParseStatement() as VariableDeclaration;
+            Assert.IsTrue(decl.Type.Name == "int");
+            Assert.IsTrue(decl.Type.Pointer == true);
+            Assert.IsTrue(decl.Type.UnsizedArray == false);
+            Assert.IsTrue(decl.Type.SizedArray == false);
+
+            decl = Parser.FromString("i : int[];").ParseStatement() as VariableDeclaration;
+            Assert.IsTrue(decl.Type.Name == "int");
+            Assert.IsTrue(decl.Type.Pointer == false);
+            Assert.IsTrue(decl.Type.UnsizedArray == true);
+            Assert.IsTrue(decl.Type.SizedArray == false);
+
+            decl = Parser.FromString("i : int[20];").ParseStatement() as VariableDeclaration;
+            Assert.IsTrue(decl.Type.Name == "int");
+            Assert.IsTrue(decl.Type.Pointer == false);
+            Assert.IsTrue(decl.Type.UnsizedArray == false);
+            Assert.IsTrue(decl.Type.SizedArray == true);
+            Assert.IsTrue(decl.Type.ArraySize == 20);
+
+            decl = Parser.FromString("i : int[]*;").ParseStatement() as VariableDeclaration;
+            Assert.IsTrue(decl.Type.Name == "int");
+            Assert.IsTrue(decl.Type.Pointer == true);
+            Assert.IsTrue(decl.Type.UnsizedArray == true);
+            Assert.IsTrue(decl.Type.SizedArray == false);
+
+            decl = Parser.FromString("i : int[20]*;").ParseStatement() as VariableDeclaration;
+            Assert.IsTrue(decl.Type.Name == "int");
+            Assert.IsTrue(decl.Type.Pointer == true);
+            Assert.IsTrue(decl.Type.UnsizedArray == false);
+            Assert.IsTrue(decl.Type.SizedArray == true);
+        }
+
+        [TestMethod]
         public void Parser_VariableDeclarations()
         {
             var decl = Parser.FromString("i := 5;").ParseStatement() as VariableDeclaration;

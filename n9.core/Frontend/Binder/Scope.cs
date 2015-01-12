@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace n9.core.PrattTest
+namespace n9.core
 {
     public class Scope
     {

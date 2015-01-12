@@ -37,7 +37,7 @@ namespace n9.cmd
 
             Console.Write(Parser.FromString(@"
 
-            func a(a:bool, b:bool) : int 
+            func a(a:bool*, b:bool[0xFF]) : int[]
             { 
                 if (a)
                     foo();

@@ -63,6 +63,12 @@ Additional principals of the project:
  - Rusts "loop" keyword is probably a good thing. I have a LOT of while(true) in this compiler.
    Maybe that's just my failure to construct more clever loops but whatever. Its how I write code.
 
-
-
  - Note to self, Andrei's Expected<T> talk is interesting.
+TODO: It would be cool if there were full separation and interjectable places between:
+ - Lexer
+ - Parser
+ - Binder
+ - Analytical phases, lowering, etc
+ - Code generation
+
+At the moment these are semi-isolated but not necessarily 100%. Logically we're in good shape, API-wise some changes may be required.
