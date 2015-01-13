@@ -180,14 +180,15 @@ namespace n9.test
         [TestMethod]
         public void Lexer_Keywords()
         {
-            var tokens = Tokenize("struct func if else while return");
-            Assert.IsTrue(tokens.Count == 6);
+            var tokens = Tokenize("struct func if else while return defer");
+            Assert.IsTrue(tokens.Count == 7);
             Assert.IsTrue(tokens[0].Type == TokenType.Struct);
             Assert.IsTrue(tokens[1].Type == TokenType.Func);
             Assert.IsTrue(tokens[2].Type == TokenType.If);
             Assert.IsTrue(tokens[3].Type == TokenType.Else);
             Assert.IsTrue(tokens[4].Type == TokenType.While);
             Assert.IsTrue(tokens[5].Type == TokenType.Return);
+            Assert.IsTrue(tokens[6].Type == TokenType.Defer);
         }
 
         // ====================================================

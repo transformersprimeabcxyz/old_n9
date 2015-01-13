@@ -446,6 +446,7 @@ namespace n9.core
             keywords["else"] = TokenType.Else;
             keywords["while"] = TokenType.While;
             keywords["return"] = TokenType.Return;
+            keywords["defer"] = TokenType.Defer;
 		}
     }
 
@@ -518,6 +519,7 @@ namespace n9.core
         Else,
         While,
         Return,
+        Defer,
 
         Bang,
         Dot,

@@ -171,6 +171,8 @@ namespace n9.core
                     return ParseFuncDeclaration();
                 case TokenType.Return:
                     return ParseReturnStatement();
+                case TokenType.Defer:
+                    return ParseDeferStatement();
                 case TokenType.While:
                     return ParseWhileStatement();
                 case TokenType.If:
@@ -298,6 +300,18 @@ namespace n9.core
             Consume(TokenType.Return);
             var stmt = new ReturnStatement { Expr = ParseExpression() };
             Consume(TokenType.Semi);
+            return stmt;
+        }
+
+        DeferStatement ParseDeferStatement()
+        {
+            Consume(TokenType.Defer);
+            var stmt = new DeferStatement();
+            if (Match(TokenType.LCurly))
+                while (!Match(TokenType.RCurly))
+                    stmt.Body.Add(ParseStatement());
+            else
+                stmt.Body.Add(ParseStatement());
             return stmt;
         }
 

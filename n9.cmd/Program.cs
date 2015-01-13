@@ -7,7 +7,25 @@ namespace n9.cmd
 	{
 		static void Main(string[] args)
 		{
-            Console.Write(Parser.FromString("x : string;").ParseStatement());
+            var binder = Binder.FromString(@"
+
+            func sum_to_int(max:int) : int
+            {
+                i := 1;
+                defer quit();
+                sum := 0;
+                while (i < max)
+                {
+                    sum = sum + i;
+                    i = i + 1;
+                }
+                return sum;
+            }
+
+            "); binder.Bind();
+            Console.WriteLine(binder.Funcs[0]);
+
+/*            Console.Write(Parser.FromString("x : string;").ParseStatement());
             Console.Write(Parser.FromString("x : int = 2;").ParseStatement());
             Console.Write(Parser.FromString("x : int = 2/1;").ParseStatement());
             Console.Write(Parser.FromString("x := 2;").ParseStatement());
@@ -52,7 +70,7 @@ namespace n9.cmd
                 return 5/2;
             } 
 
-            ").ParseStatement());
+            ").ParseStatement());*/
 		}
 	}
 }

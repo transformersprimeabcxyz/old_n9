@@ -169,6 +169,25 @@ namespace n9.core
         }
     }
 
+    public class DeferStatement : Statement
+    {
+        public List<Statement> Body = new List<Statement>();
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append("defer ", indentLevel);
+            if (Body.Count == 1) {
+                Body[0].Print(buffer);
+            } else {
+                buffer.Append("\n");
+                buffer.Append("{\n", indentLevel);
+                foreach (var stmt in Body)
+                    stmt.Print(buffer, indentLevel+1);
+                buffer.Append("}\n", indentLevel);
+            }
+        }
+    }
+
     public class AssignStatement : Statement
     {
         public AssignExpr AssignExpr;

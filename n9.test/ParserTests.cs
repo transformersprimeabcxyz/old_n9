@@ -185,6 +185,17 @@ namespace n9.test
             Assert.IsTrue(s2 is AssignStatement);
             Assert.IsTrue(s2.AssignExpr.Left is NameExpr);
             Assert.IsTrue(s2.AssignExpr.Right is BinaryOperatorExpr);
+
+            var s3 = Parser.FromString("defer i = 42;").ParseStatement() as DeferStatement;
+            Assert.IsTrue(s3 is DeferStatement);
+            Assert.IsTrue(s3.Body.Count == 1);
+            Assert.IsTrue(s3.Body[0] is AssignStatement);
+
+            s3 = Parser.FromString("defer { i = 0; close(foo); }").ParseStatement() as DeferStatement;
+            Assert.IsTrue(s3 is DeferStatement);
+            Assert.IsTrue(s3.Body.Count == 2);
+            Assert.IsTrue(s3.Body[0] is AssignStatement);
+            Assert.IsTrue(s3.Body[1] is CallStatement);
         }
 
         [TestMethod]
