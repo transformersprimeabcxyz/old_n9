@@ -447,6 +447,7 @@ namespace n9.core
             keywords["while"] = TokenType.While;
             keywords["return"] = TokenType.Return;
             keywords["defer"] = TokenType.Defer;
+            keywords["pragma"] = TokenType.Pragma;
 		}
     }
 
@@ -520,6 +521,7 @@ namespace n9.core
         While,
         Return,
         Defer,
+        Pragma,
 
         Bang,
         Dot,

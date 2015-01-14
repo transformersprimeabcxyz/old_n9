@@ -11,6 +11,7 @@ namespace n9.cmd
 
             func sum_to_int(max:int) : int
             {
+                pragma warning disable 1053;
                 i := 1;
                 defer quit();
                 sum := 0;
@@ -23,6 +24,10 @@ namespace n9.cmd
             }
 
             "); binder.Bind();
+
+            var cgen = new CGen(binder);
+            cgen.Generate();
+
             Console.WriteLine(binder.Funcs[0]);
 
 /*            Console.Write(Parser.FromString("x : string;").ParseStatement());

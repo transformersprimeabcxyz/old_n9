@@ -255,4 +255,23 @@ namespace n9.core
             buffer.Append("}\n", indentLevel);
         }
     }
+
+    public class PragmaStatement : Statement
+    {
+        public List<Token> Body = new List<Token>();
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append("pragma ", indentLevel);
+            bool first = true;
+            foreach (var token in Body)
+            {
+                if (!first)
+                    buffer.Append(" ");
+                buffer.Append(token.Text);
+                first = false;
+            }
+            buffer.Append(";\n");
+        }
+    }
 }

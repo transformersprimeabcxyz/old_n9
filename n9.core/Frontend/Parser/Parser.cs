@@ -177,6 +177,8 @@ namespace n9.core
                     return ParseWhileStatement();
                 case TokenType.If:
                     return ParseIfStatement();
+                case TokenType.Pragma:
+                    return ParsePragmaStatement();
                 case TokenType.EOF:
                     return null;
             }
@@ -362,6 +364,15 @@ namespace n9.core
                     list.Add(ParseStatement());
             else
                 list.Add(ParseStatement());
+        }
+
+        PragmaStatement ParsePragmaStatement()
+        {
+            Consume(TokenType.Pragma);
+            var stmt = new PragmaStatement();
+            while (!Match(TokenType.Semi))
+                stmt.Body.Add(Consume());
+            return stmt;
         }
     }
 }
