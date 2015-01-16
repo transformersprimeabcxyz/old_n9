@@ -28,9 +28,9 @@ namespace n9.core
         {
             using (TextWriter w = File.CreateText("n9main.c"))
             {
-                codegen(w);
-
                 w.WriteLine("int printf(const char* format, ...);\n");
+                codegen(w);
+                
                 w.WriteLine("int main(int argc, char** argv)");
                 w.WriteLine("{");
                 w.WriteLine("    int result = n9main();");
@@ -63,11 +63,32 @@ namespace n9.core
 
         void codegen(TextWriter w)
         {
-            foreach(FuncDeclaration func in binder.Funcs)
-            {
-                codegenFunc(func, w);
+            w.WriteLine("// forward-delcare function prototypes first, so that we can output bodies to C in any order");
+            foreach (FuncDeclaration func in binder.Funcs)
+                generatePrototype(func, w);
 
+            w.WriteLine();
+            w.WriteLine("// declare function bodies");
+            foreach(FuncDeclaration func in binder.Funcs)
+                codegenFunc(func, w);
+        }
+
+        void generatePrototype(FuncDeclaration func, TextWriter w)
+        {
+            string returnType = "void";
+            if (func.ReturnType != null)
+                returnType = func.ReturnType.Name;
+            w.Write("{0} {1}(", returnType, func.Name);
+
+            bool first = true;
+            foreach (var arg in func.Parameters)
+            {
+                if (!first)
+                    w.Write(", ");
+                w.Write(arg.Type.Name);
+                first = false;
             }
+            w.WriteLine(");");
         }
 
         void codegenFunc(FuncDeclaration func, TextWriter w)

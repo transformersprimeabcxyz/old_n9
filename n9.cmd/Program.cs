@@ -9,23 +9,23 @@ namespace n9.cmd
 		{
             var binder = Binder.FromString(@"
 
-            func seven() : int
-            {
-                return 7;
-            }
-
             func n9main() : int
             {
-                seven();
 
                 i : int = 0; // TODO type deduction aint gonna work for a little while :(
                 if (0)
                     i = 5;
                 else
-                    i = seven();
+                    i = identity(7);
 
                 return i+2;
             }
+
+            func identity(i:int) : int
+            {
+                return i;
+            }
+
 
             "); binder.Bind();
 
