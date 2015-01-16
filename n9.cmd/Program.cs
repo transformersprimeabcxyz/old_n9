@@ -9,28 +9,36 @@ namespace n9.cmd
 		{
             var binder = Binder.FromString(@"
 
-            func sum_to_int(max:int) : int
+            func seven() : int
             {
-                pragma warning disable 1053;
-                i := 1;
-                defer quit();
-                sum := 0;
-                while (i < max)
-                {
-                    sum = sum + i;
-                    i = i + 1;
-                }
-                return sum;
+                return 7;
+            }
+
+            func n9main() : int
+            {
+                seven();
+
+                i : int = 0; // TODO type deduction aint gonna work for a little while :(
+                if (0)
+                    i = 5;
+                else
+                    i = seven();
+
+                return i+2;
             }
 
             "); binder.Bind();
 
-            var cgen = new CGen(binder);
-            cgen.Generate();
-
             Console.WriteLine(binder.Funcs[0]);
 
-/*            Console.Write(Parser.FromString("x : string;").ParseStatement());
+            var cgen = new CGen(binder);
+            cgen.Generate();
+            cgen.Compile();
+            int res = cgen.Run();
+            Console.WriteLine(res);
+
+/*         
+            Console.Write(Parser.FromString("x : string;").ParseStatement());
             Console.Write(Parser.FromString("x : int = 2;").ParseStatement());
             Console.Write(Parser.FromString("x : int = 2/1;").ParseStatement());
             Console.Write(Parser.FromString("x := 2;").ParseStatement());
