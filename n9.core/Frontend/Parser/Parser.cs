@@ -179,6 +179,8 @@ namespace n9.core
                     return ParseIfStatement();
                 case TokenType.Pragma:
                     return ParsePragmaStatement();
+                case TokenType.Version:
+                    return ParseVersionStatement();
                 case TokenType.EOF:
                     return null;
             }
@@ -335,10 +337,7 @@ namespace n9.core
             Consume(TokenType.LParen);
             var stmt = new WhileStatement { ConditionalExpr = ParseExpression() };
             Consume(TokenType.RParen);
-
             ParseStatementOrBlock(stmt.Body);
-            // TODO the syntax "while(foo());" will fail. [ while(foo()) {} succeeds ]
-
             return stmt;
         }
 
@@ -348,17 +347,17 @@ namespace n9.core
             Consume(TokenType.LParen);
             var stmt = new IfStatement { IfExpr = ParseExpression() };
             Consume(TokenType.RParen);
-
             ParseStatementOrBlock(stmt.ThenBody);
-
             if (Match(TokenType.Else))
                 ParseStatementOrBlock(stmt.ElseBody);
-
             return stmt;
         }
 
         void ParseStatementOrBlock(List<Statement> list)
         {
+            if (Match(TokenType.Semi))
+                return; // just terminates in the case of: "while (condition);" or similar
+
             if (Match(TokenType.LCurly))
                 while (!Match(TokenType.RCurly))
                     list.Add(ParseStatement());
@@ -372,6 +371,16 @@ namespace n9.core
             var stmt = new PragmaStatement();
             while (!Match(TokenType.Semi))
                 stmt.Body.Add(Consume());
+            return stmt;
+        }
+
+        VersionStatement ParseVersionStatement()
+        {
+            Consume(TokenType.Version);
+            Consume(TokenType.LParen);
+            var stmt = new VersionStatement { ConditionalExpr = ParseExpression() };
+            Consume(TokenType.RParen);
+            ParseStatementOrBlock(stmt.Body);
             return stmt;
         }
     }

@@ -440,7 +440,8 @@ namespace n9.core
 		{
 			keywords = new Dictionary<string, TokenType>();
 
-			keywords["struct"] = TokenType.Struct;
+            keywords["version"] = TokenType.Version;
+            keywords["struct"] = TokenType.Struct;
 			keywords["func"] = TokenType.Func;
             keywords["if"] = TokenType.If;
             keywords["else"] = TokenType.Else;
@@ -513,6 +514,7 @@ namespace n9.core
         StringLiteral,
         FloatLiteral,
 
+        Version,
         Func,
         Struct,
 

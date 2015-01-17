@@ -207,6 +207,9 @@ namespace n9.test
             Assert.IsTrue(_while.Body.Count == 1);
             Assert.IsTrue(_while.Body[0] is CallStatement);
 
+            _while = Parser.FromString("while (1);").ParseStatement() as WhileStatement;
+            Assert.IsTrue(_while.Body.Count == 0);
+
             _while = Parser.FromString(@"
 
             while (i < Count)
@@ -255,6 +258,12 @@ namespace n9.test
             Assert.IsTrue(el1.IfExpr is NameExpr);
             Assert.IsTrue(el1.ThenBody.Count == 1);
             Assert.IsTrue(el1.ElseBody.Count == 1);
+
+            var _ver = Parser.FromString("version(debug) assert();").ParseStatement() as VersionStatement;
+            Assert.IsTrue(_ver is VersionStatement);
+            Assert.IsTrue(_ver.ConditionalExpr is NameExpr);
+            Assert.IsTrue(_ver.Body.Count == 1);
+            Assert.IsTrue(_ver.Body[0] is CallStatement);
         }
 
         static void ExprParseTest(string source, string output)

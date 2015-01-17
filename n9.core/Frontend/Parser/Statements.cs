@@ -274,4 +274,23 @@ namespace n9.core
             buffer.Append(";\n");
         }
     }
+
+    public class VersionStatement : Statement
+    {
+        public Expression ConditionalExpr;
+        public List<Statement> Body = new List<Statement>();
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append("version (", indentLevel);
+            buffer.Append(ConditionalExpr);
+            buffer.Append(")\n");
+            buffer.Append("{\n", indentLevel);
+
+            foreach (var stmt in Body)
+                stmt.Print(buffer, indentLevel + 1);
+
+            buffer.Append("}\n", indentLevel);
+        }
+    }
 }

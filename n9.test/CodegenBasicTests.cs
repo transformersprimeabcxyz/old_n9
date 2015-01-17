@@ -27,7 +27,8 @@ namespace n9.test
 
                 func returns_true() : int { return 1; }
 
-                func n9main() : int { 
+                func n9main() : int 
+                { 
                     i : int = 3;
                     if (returns_true())
                         i = i * 3;
