@@ -11,21 +11,20 @@ namespace n9.cmd
 
             func n9main() : int
             {
-
-                i : int = 0; // TODO type deduction aint gonna work for a little while :(
-                if (0)
-                    i = 5;
-                else
-                    i = identity(7);
-
-                return i+2;
+                sum: int = 0;
+                loopctr: int = 0;
+                while (loopctr < 10)
+                {
+                    sum = sum + square(loopctr);
+                    loopctr = loopctr + 1;
+                }
+                return sum;
             }
 
-            func identity(i:int) : int
+            func square(i:int) : int
             {
-                return i;
+                return i*i;
             }
-
 
             "); binder.Bind();
 

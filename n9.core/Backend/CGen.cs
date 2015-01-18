@@ -171,6 +171,18 @@ namespace n9.core
                 }
                 w.WriteLine();
             }
+
+            else if (s is WhileStatement)
+            {
+                var stmt = s as WhileStatement;
+                w.Write("while (");
+                codegenExpression(stmt.ConditionalExpr, w);
+                w.WriteLine(") {");
+                foreach (var _stmt in stmt.Body)
+                    codegenStatement(_stmt, w);
+                w.Write("}");
+                w.WriteLine();
+            }
         }
 
         void codegenExpression(Expression e, TextWriter w)
