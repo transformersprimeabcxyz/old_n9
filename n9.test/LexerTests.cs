@@ -10,19 +10,19 @@ namespace n9.test
 		[TestMethod]
 		public void Lexer_IntegerLiterals()
 		{
-            var tokens = Tokenize("0");
+            var tokens = N9Util.Tokenize("0");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.IntLiteral);
             Assert.IsTrue(tokens[0].IntegerLiteral == 0);
             Assert.IsTrue(tokens[0].NumberLiteralClass == NumberLiteralClass.Int);
 
-            tokens = Tokenize("12345678");
+            tokens = N9Util.Tokenize("12345678");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.IntLiteral);
             Assert.IsTrue(tokens[0].IntegerLiteral == 12345678);
             Assert.IsTrue(tokens[0].NumberLiteralClass == NumberLiteralClass.Int);
 
-            tokens = Tokenize("0xDEADBEEF 0x7F7F");
+            tokens = N9Util.Tokenize("0xDEADBEEF 0x7F7F");
             Assert.IsTrue(tokens.Count == 2);
             Assert.IsTrue(tokens[0].Type == TokenType.IntLiteral);
             Assert.IsTrue(tokens[0].IntegerLiteral == 3735928559);
@@ -31,7 +31,7 @@ namespace n9.test
             Assert.IsTrue(tokens[1].IntegerLiteral == 32639);
             Assert.IsTrue(tokens[1].NumberLiteralClass == NumberLiteralClass.Int);
 
-            tokens = Tokenize("0xDEADBEEF 0x7F7F");
+            tokens = N9Util.Tokenize("0xDEADBEEF 0x7F7F");
             Assert.IsTrue(tokens.Count == 2);
             Assert.IsTrue(tokens[0].Type == TokenType.IntLiteral);
             Assert.IsTrue(tokens[0].IntegerLiteral == 3735928559);
@@ -40,13 +40,13 @@ namespace n9.test
             Assert.IsTrue(tokens[1].IntegerLiteral == 32639);
             Assert.IsTrue(tokens[1].NumberLiteralClass == NumberLiteralClass.Int);
 
-            tokens = Tokenize("0b11110000");
+            tokens = N9Util.Tokenize("0b11110000");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.IntLiteral);
             Assert.IsTrue(tokens[0].IntegerLiteral == 0xF0);
             Assert.IsTrue(tokens[0].NumberLiteralClass == NumberLiteralClass.Int);
 
-            tokens = Tokenize("0o777");
+            tokens = N9Util.Tokenize("0o777");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.IntLiteral);
             Assert.IsTrue(tokens[0].IntegerLiteral == 511);
@@ -56,25 +56,25 @@ namespace n9.test
         [TestMethod]
         public void Lexer_FloatLiterals()
         {
-            var tokens = Tokenize("1.0");
+            var tokens = N9Util.Tokenize("1.0");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.FloatLiteral);
             Assert.IsTrue(tokens[0].FloatLiteral == 1.0);
             Assert.IsTrue(tokens[0].NumberLiteralClass == NumberLiteralClass.Float64);
 
-            tokens = Tokenize("1.0f");
+            tokens = N9Util.Tokenize("1.0f");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.FloatLiteral);
             Assert.IsTrue(tokens[0].FloatLiteral == 1.0);
             Assert.IsTrue(tokens[0].NumberLiteralClass == NumberLiteralClass.Float32);
 
-            tokens = Tokenize("1.0d");
+            tokens = N9Util.Tokenize("1.0d");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.FloatLiteral);
             Assert.IsTrue(tokens[0].FloatLiteral == 1.0);
             Assert.IsTrue(tokens[0].NumberLiteralClass == NumberLiteralClass.Float64);
 
-            tokens = Tokenize("1.0m");
+            tokens = N9Util.Tokenize("1.0m");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.FloatLiteral);
             Assert.IsTrue(tokens[0].FloatLiteral == 1.0);
@@ -86,19 +86,19 @@ namespace n9.test
         public void Lexer_BadFloat()
         {
             // TODO, we want to change this from a CompilationExecption to a Diagnostic later.
-            var tokens = Tokenize("1.0.0");
+            var tokens = N9Util.Tokenize("1.0.0");
         }
 
         [TestMethod]
         public void Lexer_Comments()
         {
-            var tokens = Tokenize(@"
+            var tokens = N9Util.Tokenize(@"
                 // line comment 1
                 identifier
                 //line comment 2");
             Assert.IsTrue(tokens.Count == 1);
 
-            tokens = Tokenize(@"
+            tokens = N9Util.Tokenize(@"
                 /* comment */ real_token_1 /* commment */
                 /* multi
                    line
@@ -115,10 +115,10 @@ namespace n9.test
         [TestMethod]
         public void Lexer_Symbols()
         {
-            var tokens = Tokenize("!.,(){}[]=+-*/:;");
+            var tokens = N9Util.Tokenize("!.,(){}[]=+-*/:;");
             Assert.IsTrue(tokens.Count == 16);
 
-            tokens = Tokenize("== != > < >= <= && & || |");
+            tokens = N9Util.Tokenize("== != > < >= <= && & || |");
             Assert.IsTrue(tokens.Count == 10);
             Assert.IsTrue(tokens[0].Type == TokenType.Equality);
             Assert.IsTrue(tokens[1].Type == TokenType.Inequality);
@@ -135,16 +135,16 @@ namespace n9.test
         [TestMethod]
         public void Lexer_StringLiterals()
         {
-            var tokens = Tokenize("\"Hello World\"");  // tokenize "Hello World"
+            var tokens = N9Util.Tokenize("\"Hello World\"");  // tokenize "Hello World"
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].Type == TokenType.StringLiteral);
             Assert.IsTrue(tokens[0].StringLiteral == "Hello World");
 
-            tokens = Tokenize("\"Hello \nWorld\"");
+            tokens = N9Util.Tokenize("\"Hello \nWorld\"");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].StringLiteral.Contains("\n"));
 
-            tokens = Tokenize("\"\\t\"");
+            tokens = N9Util.Tokenize("\"\\t\"");
             Assert.IsTrue(tokens.Count == 1);
             Assert.IsTrue(tokens[0].StringLiteral == "\t");
         }
@@ -153,34 +153,34 @@ namespace n9.test
         [ExpectedException(typeof(CompilationException))]
         public void Lexer_StringBadControlCodes()
         {
-            var tokens = Tokenize("\"\\m is not a valid control code\"");  // tokenizing "\m"
+            var tokens = N9Util.Tokenize("\"\\m is not a valid control code\"");  // tokenizing "\m"
         }
 
         [TestMethod]
         [ExpectedException(typeof(CompilationException))]
         public void Lexer_UnterminatedStringLiteral()
         {
-            var tokens = Tokenize("\"This string does not have a terminating quotation mark");
+            var tokens = N9Util.Tokenize("\"This string does not have a terminating quotation mark");
         }
 
         [TestMethod]
         public void Lexer_StringLiteralLinefeeds()
         {
-            var tokens = Tokenize("\"Test \r\n String'\""); // Tokenize "Test <CR><LF> String" -- \r should get stripped out
+            var tokens = N9Util.Tokenize("\"Test \r\n String'\""); // Tokenize "Test <CR><LF> String" -- \r should get stripped out
             Assert.IsTrue(tokens[0].StringLiteral.Contains("\n"));
             Assert.IsTrue(tokens[0].StringLiteral.Contains("\r") == false);
-            
-            tokens = Tokenize("\"Test \\r\\n String'\""); // Tokenize "Test \r\n String" -- \r should be left intact
+
+            tokens = N9Util.Tokenize("\"Test \\r\\n String'\""); // Tokenize "Test \r\n String" -- \r should be left intact
             Assert.IsTrue(tokens[0].StringLiteral.Contains("\r"));
 
-            tokens = Tokenize("\"Test \\\\r String'\""); // Tokenize "Test \\r String" -- string @"\r" should be present in literal
+            tokens = N9Util.Tokenize("\"Test \\\\r String'\""); // Tokenize "Test \\r String" -- string @"\r" should be present in literal
             Assert.IsTrue(tokens[0].StringLiteral.Contains(@"\r"));
         }
 
         [TestMethod]
         public void Lexer_Keywords()
         {
-            var tokens = Tokenize("struct func if else while return defer version");
+            var tokens = N9Util.Tokenize("struct func if else while return defer version");
             Assert.IsTrue(tokens.Count == 8);
             Assert.IsTrue(tokens[0].Type == TokenType.Struct);
             Assert.IsTrue(tokens[1].Type == TokenType.Func);
@@ -190,22 +190,6 @@ namespace n9.test
             Assert.IsTrue(tokens[5].Type == TokenType.Return);
             Assert.IsTrue(tokens[6].Type == TokenType.Defer);
             Assert.IsTrue(tokens[7].Type == TokenType.Version);
-        }
-
-        // ====================================================
-
-        List<Token> Tokenize(string pgm)
-        {
-            var tokens = new List<Token>();
-            var fr = FileReader.FromString(pgm);
-            var lx = new Lexer(fr);
-            while (true)
-            {
-                var t = lx.Next();
-                if (t.Type == TokenType.EOF)
-                    return tokens;
-                tokens.Add(t);
-            }
         }
 	}
 }

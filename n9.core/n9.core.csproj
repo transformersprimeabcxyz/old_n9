@@ -49,6 +49,7 @@
     <Compile Include="Frontend\Parser\Parser.cs" />
     <Compile Include="Frontend\Binder\Scope.cs" />
     <Compile Include="N9Context.cs" />
+    <Compile Include="N9Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

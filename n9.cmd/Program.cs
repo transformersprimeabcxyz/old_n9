@@ -7,7 +7,7 @@ namespace n9.cmd
 	{
 		static void Main(string[] args)
 		{
-            var binder = Binder.FromString(@"
+            string pgm = @"
 
             func n9main() : int
             {
@@ -26,7 +26,11 @@ namespace n9.cmd
                 return i*i;
             }
 
-            "); binder.Bind();
+            ";
+
+            var ctx = N9Context.FromString(pgm).Construct();
+
+            var binder = Binder.FromString(pgm); binder.Bind();
 
             Console.WriteLine(binder.Funcs[0]);
 

@@ -62,6 +62,9 @@ Additional principals of the project:
  - Probably operator overloading
  - Rusts "loop" keyword is probably a good thing. I have a LOT of while(true) in this compiler.
    Maybe that's just my failure to construct more clever loops but whatever. Its how I write code.
+ - Very much want to incorporate unlikely branch / cold code path into the language definition.
+ - Writing this compiler in C#, I have very frequently wanted to use Ceylon's flow-dependent typing.
+   However I do not believe this feature would be applicable to n9 as I don't think it will have a traditional inheritance model.
 
  - Note to self, Andrei's Expected<T> talk is interesting.
 TODO: It would be cool if there were full separation and interjectable places between:
@@ -72,3 +75,4 @@ TODO: It would be cool if there were full separation and interjectable places be
  - Code generation
 
 At the moment these are semi-isolated but not necessarily 100%. Logically we're in good shape, API-wise some changes may be required.
+Syntax quibble: the "name:type" syntax preclude the use of : for "goto_label:". Decide how to resolve. Not 100% married to the name:type syntax but it seems to be in vogue.

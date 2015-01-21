@@ -6,11 +6,9 @@ namespace n9.core
     public class N9Context
     {
         // TODO N9Context
-        // list of source files
         // intel, arm?
         // debug, release
         // opt-levels, compiler flags
-        // generate EXE, static library, shared library
 
         // ==============================================================================
 
@@ -22,9 +20,13 @@ namespace n9.core
 
         public List<String> VersionTags = new List<string>();
 
+        // ------------------------------------------------------------------------------
+
+        public List<Parser> SourceFiles = new List<Parser>();
+
         // ==============================================================================
 
-        public N9Context InitTags()
+        public N9Context Construct()
         {
             if (GenerateDebugSymbols)
                 VersionTags.Add("debug");
@@ -44,6 +46,13 @@ namespace n9.core
             OptimizationLevel = OptimizationLevel.Max;
             GenerateDebugSymbols = true;
             return this;
+        }
+
+        public static N9Context FromString(string pgm, string filename = "default.n9")
+        {
+            var ctx = new N9Context();
+            ctx.SourceFiles.Add(Parser.FromString(pgm, filename));
+            return ctx;
         }
     }
 
