@@ -264,6 +264,19 @@ namespace n9.test
             Assert.IsTrue(_ver.ConditionalExpr is NameExpr);
             Assert.IsTrue(_ver.Body.Count == 1);
             Assert.IsTrue(_ver.Body[0] is CallStatement);
+
+            var _mod = N9Util.ParseStatement("module;") as ModuleStatement;
+            Assert.IsTrue(_mod is ModuleStatement);
+            Assert.IsTrue(_mod.Module == "");
+
+            _mod = N9Util.ParseStatement("module foo;") as ModuleStatement;
+            Assert.IsTrue(_mod.Module == "foo");
+
+            _mod = N9Util.ParseStatement("module foo.bar;") as ModuleStatement;
+            Assert.IsTrue(_mod.Module == "foo.bar");
+
+            N9Util.AssertException(() => N9Util.ParseStatement("module foo 1;")); //expect dot or semi after name
+            N9Util.AssertException(() => N9Util.ParseStatement("module foo.;")); //expect name after dot
         }
 
         static void ExprParseTest(string source, string output)

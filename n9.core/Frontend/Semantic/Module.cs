@@ -89,7 +89,7 @@ namespace n9.core
                 var obj = symbols[name];
                 var dir = obj as Module;
 
-                Console.WriteLine(printableName + "\t[" + obj.GetType().Name+"]");
+                Console.WriteLine("{0,-30} [{1}]", printableName, obj.GetType().Name);
 
                 if (recurse && dir != null)
                     dir.PrintDirectory();

@@ -293,4 +293,16 @@ namespace n9.core
             buffer.Append("}\n", indentLevel);
         }
     }
+
+    public class ModuleStatement : Statement
+    {
+        public string Module;
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append("module ", indentLevel);
+            buffer.Append(Module);
+            buffer.Append(";\n");
+        }
+    }
 }

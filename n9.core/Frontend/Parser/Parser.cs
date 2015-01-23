@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace n9.core
 {
@@ -181,6 +182,8 @@ namespace n9.core
                     return ParsePragmaStatement();
                 case TokenType.Version:
                     return ParseVersionStatement();
+                case TokenType.Module:
+                    return ParseModuleStatement();
                 case TokenType.EOF:
                     return null;
             }
@@ -381,6 +384,26 @@ namespace n9.core
             var stmt = new VersionStatement { ConditionalExpr = ParseExpression() };
             Consume(TokenType.RParen);
             ParseStatementOrBlock(stmt.Body);
+            return stmt;
+        }
+
+        ModuleStatement ParseModuleStatement()
+        {
+            Consume(TokenType.Module);
+            var stmt = new ModuleStatement();
+            var sb = new StringBuilder();
+
+            while (!Match(TokenType.Semi))
+            {
+                sb.Append(Consume(TokenType.Id).Text);
+                if (Match(TokenType.Semi))
+                    break;
+                Consume(TokenType.Dot);
+                sb.Append(".");
+                if (LookAhead(0).Type != TokenType.Id)
+                    throw new Exception("Identifier expected");
+            }
+            stmt.Module = sb.ToString();
             return stmt;
         }
     }
