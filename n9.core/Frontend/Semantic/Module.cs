@@ -25,6 +25,9 @@ namespace n9.core
 
         public Module RegisterModule(string module)
         {
+            if (module == "") 
+                return this;
+
             if (symbols.ContainsKey(module))
                 throw new Exception("Key " + module + " already exists in module <" + CurrentPath + ">");
 

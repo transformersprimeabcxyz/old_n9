@@ -7,7 +7,30 @@ namespace n9.cmd
 	{
 		static void Main(string[] args)
 		{
-            string pgm = @"
+            string pgm;
+
+            pgm = @"
+
+            i1 : int;
+            version(a)
+                i2:int;
+            i3:int;
+        
+
+            ";
+
+            var ctx = N9Context.FromString(pgm).Construct();
+            var model = UnboundProgramModel.Generate(ctx);
+            model.PgmRoot.PrintDirectory();
+
+
+
+
+
+            return;
+
+
+            pgm = @"
 
             func n9main() : int
             {
@@ -28,7 +51,7 @@ namespace n9.cmd
 
             ";
 
-            var ctx = N9Context.FromString(pgm).Construct();
+            ctx = N9Context.FromString(pgm).Construct();
 
             var binder = Binder.FromString(pgm); binder.Bind();
 

@@ -39,6 +39,8 @@
   <ItemGroup>
     <Compile Include="Backend\CGen.cs" />
     <Compile Include="Frontend\Binder\Binder.cs" />
+    <Compile Include="Frontend\Semantic\Module.cs" />
+    <Compile Include="Frontend\Semantic\UnboundProgramModel.cs" />
     <Compile Include="Frontend\Parser\Statements.cs" />
     <Compile Include="Frontend\Diagnostic.cs" />
     <Compile Include="Frontend\FileReader.cs" />
