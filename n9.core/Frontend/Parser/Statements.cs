@@ -279,6 +279,7 @@ namespace n9.core
     {
         public Expression ConditionalExpr;
         public List<Statement> Body = new List<Statement>();
+        public List<Statement> ElseBody = new List<Statement>();
 
         public override void Print(StringBuilder buffer, int indentLevel = 0)
         {
@@ -289,8 +290,17 @@ namespace n9.core
 
             foreach (var stmt in Body)
                 stmt.Print(buffer, indentLevel + 1);
-
+            
             buffer.Append("}\n", indentLevel);
+
+            if (ElseBody.Count > 0)
+            {
+                buffer.Append("else\n", indentLevel);
+                buffer.Append("{\n", indentLevel);
+                foreach (var stmt in ElseBody)
+                    stmt.Print(buffer, indentLevel + 1);
+                buffer.Append("}\n", indentLevel);
+            }
         }
     }
 

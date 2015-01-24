@@ -384,6 +384,10 @@ namespace n9.core
             var stmt = new VersionStatement { ConditionalExpr = ParseExpression() };
             Consume(TokenType.RParen);
             ParseStatementOrBlock(stmt.Body);
+
+            if (Match(TokenType.Else))
+                ParseStatementOrBlock(stmt.ElseBody);
+
             return stmt;
         }
 
