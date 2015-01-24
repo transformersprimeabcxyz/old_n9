@@ -75,6 +75,17 @@ namespace n9.core
 
     // =====================================================
 
+    class UnaryOperationParselet : PrefixParselet
+    {
+        public override Expression Parse(Parser p, Token t)
+        {
+            var right = p.ParseExpression();
+            return new UnaryOperatorExpr { Op = t.Type, Right = right };
+        }
+    }
+
+    // =====================================================
+
     class PrefixParenParselet : PrefixParselet
     {
         public override Expression Parse(Parser p, Token t)

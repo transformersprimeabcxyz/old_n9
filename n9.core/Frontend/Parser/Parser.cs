@@ -43,6 +43,7 @@ namespace n9.core
             Register(TokenType.StringLiteral, new StringLiteralParselet(), 0);
             Register(TokenType.Minus, new PrefixMinusParselet(), 0);
             Register(TokenType.LParen, new PrefixParenParselet(), 0);
+            Register(TokenType.Bang, new UnaryOperationParselet(), 0);
 
             // Infix operators
             Register(TokenType.LogicalAnd, new BinaryOperationParselet(), 30); // TODO AND and OR should have different precedence. I think.

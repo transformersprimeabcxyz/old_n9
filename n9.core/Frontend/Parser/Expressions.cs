@@ -65,6 +65,19 @@ namespace n9.core
 
     // =====================================================
 
+    public class UnaryOperatorExpr : Expression
+    {
+        public TokenType Op;
+        public Expression Right;
+
+        public override string ToString()
+        {
+            return Op + "(" + Right + ")";
+        }
+    }
+
+    // =====================================================
+
     public class BinaryOperatorExpr : Expression
     {
         public TokenType Op; // TODO we may want to map this to a more specialized enum, but we work with this for now.

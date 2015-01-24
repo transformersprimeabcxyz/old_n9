@@ -102,6 +102,16 @@ namespace n9.core
                     return left || right;
                 throw new Exception("Unsupported operator in version condition");
             }
+
+            if (expr is UnaryOperatorExpr)
+            {
+                var e = expr as UnaryOperatorExpr;
+                bool right = EvaluateVersionConditional(e.Right);
+                if (e.Op == TokenType.Bang)
+                    return !right;
+                throw new Exception("Unsupported operator in version condition");
+            }
+
             throw new Exception("Syntax error.");
         }
     }

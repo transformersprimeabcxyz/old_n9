@@ -28,6 +28,8 @@ namespace n9.test
             ExprParseTest("foo(bar)", "foo(bar)");
             ExprParseTest("foo(bar,1,1+2,(a/b))", "foo(bar,1,(1 Plus 2),(a Divslash b))");
             ExprParseTest("a()()", "a()()");
+
+            ExprParseTest("!a", "Bang(a)");
         }
 
         [TestMethod]
