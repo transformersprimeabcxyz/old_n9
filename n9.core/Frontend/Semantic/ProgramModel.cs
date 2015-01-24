@@ -8,12 +8,15 @@ namespace n9.core
 
         N9Context ctx;
         Module UnboundRoot;
+        public Module Root;
         
         // ===========================================================================
 
         public static ProgramModel Bind(N9Context _ctx, UnboundProgramModel unbound)
         {
             var model = new ProgramModel { UnboundRoot = unbound.PgmRoot, ctx = _ctx };
+            model.Root = new Module();
+            BuiltinTypes.RegisterBuiltins(model);
 
             model.Analyze();
 

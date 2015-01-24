@@ -41,6 +41,7 @@
     <Compile Include="Frontend\Binder\Binder.cs" />
     <Compile Include="Frontend\Semantic\Module.cs" />
     <Compile Include="Frontend\Semantic\ProgramModel.cs" />
+    <Compile Include="Frontend\Semantic\Types.cs" />
     <Compile Include="Frontend\Semantic\UnboundProgramModel.cs" />
     <Compile Include="Frontend\Parser\Statements.cs" />
     <Compile Include="Frontend\Diagnostic.cs" />
