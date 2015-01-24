@@ -11,20 +11,21 @@ namespace n9.cmd
 
             pgm = @"
 
-            i1 : int;
-            version(a)
-                i2:int;
-            i3:int;
-        
+            module module1;
+
+            version(b)
+                taken:int;
+            else
+                not_taken:int;
 
             ";
 
             var ctx = N9Context.FromString(pgm).Construct();
-            var model = UnboundProgramModel.Generate(ctx);
-            model.PgmRoot.PrintDirectory();
+            ctx.VersionTags.Add("a");
+            ctx.SourceFiles.Add(Parser.FromString("module module2; hello:string;"));
 
-
-
+            var unbound = UnboundProgramModel.Generate(ctx);
+            var model = ProgramModel.Bind(ctx, unbound);
 
 
             return;
