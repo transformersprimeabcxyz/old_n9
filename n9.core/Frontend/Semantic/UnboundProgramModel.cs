@@ -85,8 +85,24 @@ namespace n9.core
 
         bool EvaluateVersionConditional(Expression expr)
         {
-            // TODO actually evaluate
-            return false;
+            if (expr is NameExpr)
+            {
+                var e = expr as NameExpr;
+                return ctx.VersionTags.Contains(e.Name);
+            }
+
+            if (expr is BinaryOperatorExpr)
+            {
+                var e = expr as BinaryOperatorExpr;
+                bool left = EvaluateVersionConditional(e.Left);
+                bool right = EvaluateVersionConditional(e.Right);
+                if (e.Op == TokenType.LogicalAnd)
+                    return left && right;
+                if (e.Op == TokenType.LogicalOr)
+                    return left || right;
+                throw new Exception("Unsupported operator in version condition");
+            }
+            throw new Exception("Syntax error.");
         }
     }
 }
