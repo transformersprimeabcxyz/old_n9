@@ -77,6 +77,23 @@ namespace n9.core
             return node;
         }
 
+        public void Visit<T>(Action<string, string, T> visitor)
+        {
+            foreach (var name in symbols.Keys)
+            {
+                var obj = symbols[name];
+                if (obj.GetType() == typeof(T))
+                {
+                    visitor(CurrentPath, name, (T)obj);
+                }
+                else if (obj is Module)
+                {
+                    var mod = obj as Module;
+                    mod.Visit(visitor);
+                }
+            }
+        }
+
         public void PrintDirectory(bool recurse = true)
         {
             var keys = new List<string>(symbols.Keys);

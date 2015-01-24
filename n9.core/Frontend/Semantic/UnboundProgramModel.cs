@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace n9.core
 {
@@ -57,8 +53,9 @@ namespace n9.core
                 if (satisfied)
                     foreach (var innerStmt in s.Body) // parse contents as top-level statements
                         AnalyzeToplevelStatement(p, innerStmt);
-
-                // else we're just discarding the contents of statement.
+                else
+                    foreach (var innerStmt in s.ElseBody)
+                        AnalyzeToplevelStatement(p, innerStmt);
             }
 
             else if (stmt is StructDeclaration)
@@ -77,7 +74,6 @@ namespace n9.core
             {
                 var s = stmt as FuncDeclaration;
                 CurrentModule.RegisterSymbol(s.Name, s);
-                // TODO should we check non-toplevel version statements?
             }
 
             else throw new Exception("Statement was not expected at top level.");

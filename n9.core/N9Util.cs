@@ -19,21 +19,34 @@ namespace n9.core
             }
         }
 
-        public static Statement ParseStatement(string pgm)
-        {
-            var p = Parser.FromString(pgm);
-            return p.ParseStatement();
-        }
-
         public static Expression ParseExpression(string pgm)
         {
             var p = Parser.FromString(pgm);
             return p.ParseExpression();
         }
 
+        public static Statement ParseStatement(string pgm)
+        {
+            var p = Parser.FromString(pgm);
+            return p.ParseStatement();
+        }
+
         public static Parser GetParser(string pgm)
         {
             return Parser.FromString(pgm);
+        }
+
+        public static UnboundProgramModel GetUnboundModel(string pgm)
+        {
+            var ctx = N9Context.FromString(pgm).Construct();
+            return UnboundProgramModel.Generate(ctx);
+        }
+
+        public static ProgramModel GetModel(string pgm)
+        {
+            var ctx = N9Context.FromString(pgm).Construct();
+            var unbound = UnboundProgramModel.Generate(ctx);
+            return ProgramModel.Bind(ctx, unbound);
         }
 
         public static void AssertException(Action e)
