@@ -13,20 +13,23 @@ namespace n9.cmd
 
             module module1;
 
-            version(b)
-                taken:int;
-            else
-                not_taken:int;
+            version(a && b)
+                a_and_b:int;
+            else version(a)
+                a:int;
+            else version(b)
+                b:int;
 
+            func test()
+            {
+                version(a)
+                    i:int;
+                j:int;
+            }
             ";
 
-            var ctx = N9Context.FromString(pgm).Construct();
-            ctx.VersionTags.Add("a");
-            ctx.SourceFiles.Add(Parser.FromString("module module2; hello:string;"));
-
-            var unbound = UnboundProgramModel.Generate(ctx);
-            var model = ProgramModel.Bind(ctx, unbound);
-
+            var ctx = N9Context.FromString(pgm).Tags("a","b").Construct();
+            Console.WriteLine(ctx.SourceFiles[0]);
 
             return;
 

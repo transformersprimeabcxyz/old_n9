@@ -5,11 +5,6 @@ namespace n9.core
 {
     public class N9Context
     {
-        // TODO N9Context
-        // intel, arm?
-        // debug, release
-        // opt-levels, compiler flags
-
         // ==============================================================================
 
         public ArchBits ArchBits = ArchBits.Arch32Bit;
@@ -19,25 +14,24 @@ namespace n9.core
         public bool GenerateDebugSymbols = true;
 
         public List<String> VersionTags = new List<string>();
-
-        // ------------------------------------------------------------------------------
-
-        public List<Parser> SourceFiles = new List<Parser>();
+        public List<SourceFile> SourceFiles = new List<SourceFile>();
 
         // ==============================================================================
 
         public N9Context Construct()
         {
             if (GenerateDebugSymbols)
-                VersionTags.Add("debug");
+                Tags("debug");
 
             switch (ArchBits)
             {
-                case ArchBits.Arch32Bit: VersionTags.Add("x86"); VersionTags.Add("arch32bit"); break;
-                case ArchBits.Arch64Bit: VersionTags.Add("x64"); VersionTags.Add("arch64bit"); break;
+                case ArchBits.Arch32Bit: Tags("x86", "arch32bit"); break;
+                case ArchBits.Arch64Bit: Tags("x64", "arch64bit"); break;
             }
-                VersionTags.Add("debug");
 
+            foreach (var src in SourceFiles)
+                src.Analyze();
+            
             return this;
         }
 
@@ -48,10 +42,18 @@ namespace n9.core
             return this;
         }
 
+        public N9Context Tags(params string[] tags)
+        {
+            foreach (var tag in tags)
+                if (!VersionTags.Contains(tag))
+                    VersionTags.Add(tag);
+            return this;
+        }
+
         public static N9Context FromString(string pgm, string filename = "default.n9")
         {
             var ctx = new N9Context();
-            ctx.SourceFiles.Add(Parser.FromString(pgm, filename));
+            ctx.SourceFiles.Add(SourceFile.FromString(ctx, pgm, filename));
             return ctx;
         }
     }

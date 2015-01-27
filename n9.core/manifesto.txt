@@ -66,6 +66,10 @@ Additional principals of the project:
  - Writing this compiler in C#, I have very frequently wanted to use Ceylon's flow-dependent typing.
    However I do not believe this feature would be applicable to n9 as I don't think it will have a traditional inheritance model.
 
+ - This is the RESEARCH COMPILER. As mentioned earlier, one day we will rewrite our compiler in n9...
+   This compiler has a model of, while we can generate multiple warnings and static analysis, we can only generate one error.
+   We will fatal error on the first error we hit. Fail-fast, right?
+
  - Note to self, Andrei's Expected<T> talk is interesting.
 TODO: It would be cool if there were full separation and interjectable places between:
  - Lexer

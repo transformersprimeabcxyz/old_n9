@@ -42,10 +42,10 @@ namespace n9.core
             // TODO canrepresent...
         };
 
-        public static void RegisterBuiltins(ProgramModel model)
-        {
-            model.Root.RegisterSymbol("int", i32);
-        }
+        //public static void RegisterBuiltins(ProgramModel model)
+        //{
+        //    model.Root.RegisterSymbol("int", i32);
+        //}
 
     }
 }
