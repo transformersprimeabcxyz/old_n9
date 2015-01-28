@@ -178,6 +178,9 @@ namespace n9.test
             s1 = N9Util.ParseStatement("return a+b;") as ReturnStatement;
             Assert.IsTrue(s1.Expr is BinaryOperatorExpr);
 
+            s1 = N9Util.ParseStatement("return;") as ReturnStatement;
+            Assert.IsTrue(s1 != null);
+
             var s2 = N9Util.ParseStatement("i = 0;") as AssignStatement;
             Assert.IsTrue(s2 is AssignStatement);
             Assert.IsTrue(s2.AssignExpr.Left is NameExpr);

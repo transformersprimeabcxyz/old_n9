@@ -306,8 +306,12 @@ namespace n9.core
         ReturnStatement ParseReturnStatement()
         {
             Consume(TokenType.Return);
-            var stmt = new ReturnStatement { Expr = ParseExpression() };
-            Consume(TokenType.Semi);
+            var stmt = new ReturnStatement();
+            if (!Match(TokenType.Semi))
+            {
+                stmt.Expr = ParseExpression();
+                Consume(TokenType.Semi);
+            }
             return stmt;
         }
 

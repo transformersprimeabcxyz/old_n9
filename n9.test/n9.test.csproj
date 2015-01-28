@@ -58,8 +58,9 @@
   <ItemGroup>
     <Compile Include="CodegenBasicTests.cs" />
     <Compile Include="BinderTests.cs" />
-    <Compile Include="ParserTests.cs" />
-    <Compile Include="LexerTests.cs" />
+    <Compile Include="Parser\SourceFileTests.cs" />
+    <Compile Include="Parser\ParserTests.cs" />
+    <Compile Include="Parser\LexerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
