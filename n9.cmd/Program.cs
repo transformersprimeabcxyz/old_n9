@@ -24,6 +24,17 @@ namespace n9.cmd
             {
                 version(a)
                     i:int;
+                else 
+                    x:int;
+
+                while (foo())
+                {
+                    version (a)
+                        i = i + 1;
+                    else
+                        x = x + 1;
+                }
+
                 j:int;
             }
             ";

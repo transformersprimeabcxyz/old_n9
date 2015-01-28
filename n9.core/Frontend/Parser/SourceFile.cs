@@ -80,29 +80,55 @@ namespace n9.core
             else if (stmt is FuncDeclaration)
             {
                 var s = stmt as FuncDeclaration;
-                AnalyzeInnerBody(s.Body);
+                s.Body = AnalyzeInnerBody(s.Body);
                 Statements.Add(stmt);
             }
 
             else throw new Exception("Statement was not expected at top level.");
         }
-
-        void AnalyzeInnerBody(List<Statement> body)
+        
+        // TODO, basically I'm not really thrilled with the way version statements are culled from the AST.
+        // We do an entire pass through the AST doing only this, and we generate a lot of garbage doing it,
+        // and the code feels like it could be more concise.
+        // A possible resolution is figuring out how to do it in Parser.ParseStatementOrBlock()
+        // But anyway, this works and for our immediate "research compiler" purposes we have bigger fish to fry.
+        List<Statement> AnalyzeInnerBody(List<Statement> body)
         {
+            var newBody = new List<Statement>();
             foreach (var stmt in body)
             {
                 if (stmt is VersionStatement)
                 {
                     var s = stmt as VersionStatement;
                     bool satisfied = EvaluateVersionConditional(s.ConditionalExpr);
-                    // TODO this turns into a mess.
+                    if (satisfied)
+                    {
+                        var b = AnalyzeInnerBody(s.Body);
+                        newBody.AddRange(b);
+                    }
+                    else
+                    {
+                        var b = AnalyzeInnerBody(s.ElseBody);
+                        newBody.AddRange(b);
+                    }
                 }
-
-                else if (stmt is VariableDeclaration)
-                    continue;
-
-                else throw new Exception("Statement was not expected at inner level.");
+                else if (stmt is WhileStatement)
+                {
+                    var s = stmt as WhileStatement;
+                    s.Body = AnalyzeInnerBody(s.Body);
+                    newBody.Add(s);
+                }
+                else if (stmt is IfStatement)
+                {
+                    var s = stmt as IfStatement;
+                    s.ThenBody = AnalyzeInnerBody(s.ThenBody);
+                    s.ElseBody = AnalyzeInnerBody(s.ElseBody);
+                    newBody.Add(s);
+                }
+                else
+                    newBody.Add(stmt);
             }
+            return newBody;
         }
         
         bool EvaluateVersionConditional(Expression expr)
