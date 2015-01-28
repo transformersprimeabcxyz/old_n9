@@ -180,8 +180,8 @@ namespace n9.test
         [TestMethod]
         public void Lexer_Keywords()
         {
-            var tokens = N9Util.Tokenize("struct func if else while return defer version module");
-            Assert.IsTrue(tokens.Count == 9);
+            var tokens = N9Util.Tokenize("struct func if else while return defer version module import");
+            Assert.IsTrue(tokens.Count == 10);
             Assert.IsTrue(tokens[0].Type == TokenType.Struct);
             Assert.IsTrue(tokens[1].Type == TokenType.Func);
             Assert.IsTrue(tokens[2].Type == TokenType.If);
@@ -191,6 +191,7 @@ namespace n9.test
             Assert.IsTrue(tokens[6].Type == TokenType.Defer);
             Assert.IsTrue(tokens[7].Type == TokenType.Version);
             Assert.IsTrue(tokens[8].Type == TokenType.Module);
+            Assert.IsTrue(tokens[9].Type == TokenType.Import);
         }
 	}
 }

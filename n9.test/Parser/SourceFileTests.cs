@@ -76,5 +76,30 @@ namespace n9.test
             Assert.IsTrue(stmt2.Body.Count == 1);
             Assert.IsTrue(stmt2.Body[0] is AssignStatement);
         }
+
+        [TestMethod]
+        public void SourceFile_Imports()
+        {
+            var ctx = N9Context.FromString("import foo;").Construct();
+            var stmt = ctx.SourceFiles[0].Statements[0] as ImportStatement;
+            Assert.IsTrue(stmt.Module == "foo");
+
+            // TODO current implementation allows "import;", this should be an error. ("module;" is valid tho).
+            // this test documents that this is the case, hopefully we change it to be an error case in the future.
+            ctx = N9Context.FromString("import;").Construct();
+            stmt = ctx.SourceFiles[0].Statements[0] as ImportStatement;
+            Assert.IsTrue(stmt.Module == "");
+
+            ctx = N9Context.FromString("import foo.bar.baz;").Construct(); // test multi-level import
+            stmt = ctx.SourceFiles[0].Statements[0] as ImportStatement;
+            Assert.IsTrue(stmt.Module == "foo.bar.baz");
+
+            ctx = N9Context.FromString("import foo; import bar; import foo.bar;").Construct(); // test multi-level import
+            var file = ctx.SourceFiles[0];
+            Assert.IsTrue(file.Imports.Count == 3);
+            Assert.IsTrue(file.Imports[0] == "foo");
+            Assert.IsTrue(file.Imports[1] == "bar");
+            Assert.IsTrue(file.Imports[2] == "foo.bar");
+        }
 	}
 }

@@ -315,4 +315,16 @@ namespace n9.core
             buffer.Append(";\n");
         }
     }
+
+    public class ImportStatement : Statement
+    {
+        public string Module;
+
+        public override void Print(StringBuilder buffer, int indentLevel = 0)
+        {
+            buffer.Append("import ", indentLevel);
+            buffer.Append(Module);
+            buffer.Append(";\n");
+        }
+    }
 }

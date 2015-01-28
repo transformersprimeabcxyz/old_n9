@@ -441,6 +441,7 @@ namespace n9.core
 			keywords = new Dictionary<string, TokenType>();
 
             keywords["module"] = TokenType.Module;
+            keywords["import"] = TokenType.Import;
             keywords["version"] = TokenType.Version;
             keywords["struct"] = TokenType.Struct;
 			keywords["func"] = TokenType.Func;
@@ -516,6 +517,7 @@ namespace n9.core
         FloatLiteral,
 
         Module,
+        Import,
         Version,
         Func,
         Struct,

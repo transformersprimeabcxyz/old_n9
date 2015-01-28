@@ -146,7 +146,6 @@ namespace n9.core
         //  Statement Parsing
         // =====================================================================
 
-        // TODO: differentiate toplevel statements from within-code statements. (?)
         public Statement ParseStatement(bool toplevel = false)
         {
             Token first = LookAhead(0);
@@ -185,6 +184,8 @@ namespace n9.core
                     return ParseVersionStatement();
                 case TokenType.Module:
                     return ParseModuleStatement();
+                case TokenType.Import:
+                    return ParseImportStatement();
                 case TokenType.EOF:
                     return null;
             }
@@ -400,6 +401,26 @@ namespace n9.core
         {
             Consume(TokenType.Module);
             var stmt = new ModuleStatement();
+            var sb = new StringBuilder();
+
+            while (!Match(TokenType.Semi))
+            {
+                sb.Append(Consume(TokenType.Id).Text);
+                if (Match(TokenType.Semi))
+                    break;
+                Consume(TokenType.Dot);
+                sb.Append(".");
+                if (LookAhead(0).Type != TokenType.Id)
+                    throw new Exception("Identifier expected");
+            }
+            stmt.Module = sb.ToString();
+            return stmt;
+        }
+
+        ImportStatement ParseImportStatement()
+        {
+            Consume(TokenType.Import);
+            var stmt = new ImportStatement();
             var sb = new StringBuilder();
 
             while (!Match(TokenType.Semi))

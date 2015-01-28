@@ -58,6 +58,13 @@ namespace n9.core
             if (stmt is ModuleStatement)
                 Statements.Add(stmt);
 
+            else if (stmt is ImportStatement)
+            {
+                var import = stmt as ImportStatement;
+                Imports.Add(import.Module);
+                Statements.Add(stmt); // or we could cull these.. but.. meh.
+            }
+
             else if (stmt is StructDeclaration)
                 Statements.Add(stmt);
 
@@ -170,5 +177,11 @@ namespace n9.core
                 stmt.Print(sb, 0);
             return sb.ToString();
         }
+
+        // NOTE, one of the things going on here is that we are stating that imports must be that top level of the file.
+        // like java imports or C# usings.
+        // D allows imports to be at any syntactic level.
+        // We dont ultimately know how valuable this will end up being, but we are trying to make it so that nothing in the
+        // language design prevents us from going down that road if we decide to explore it later.
     }
 }
