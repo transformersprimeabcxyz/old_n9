@@ -36,18 +36,18 @@ namespace n9.core
             return Parser.FromString(pgm);
         }
 
-        //public static UnboundProgramModel GetUnboundModel(string pgm)
-        //{
-        //    var ctx = N9Context.FromString(pgm).Construct();
-        //    return UnboundProgramModel.Generate(ctx);
-        //}
+        public static UnboundProgramModel GetUnboundModel(string pgm)
+        {
+            var ctx = N9Context.FromString(pgm).Construct();
+            return UnboundProgramModel.Generate(ctx);
+        }
 
-        //public static ProgramModel GetModel(string pgm)
-        //{
-        //    var ctx = N9Context.FromString(pgm).Construct();
-        //    var unbound = UnboundProgramModel.Generate(ctx);
-        //    return ProgramModel.Bind(ctx, unbound);
-        //}
+        public static ProgramModel GetModel(string pgm)
+        {
+            var ctx = N9Context.FromString(pgm).Construct();
+            var unbound = UnboundProgramModel.Generate(ctx);
+            return ProgramModel.Bind(ctx, unbound);
+        }
 
         public static void AssertException(Action e)
         {
