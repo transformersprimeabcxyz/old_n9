@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace n9.core
 {
@@ -12,6 +10,7 @@ namespace n9.core
 
         public List<Statement> Statements = new List<Statement>();
         public List<string> Imports = new List<string>();
+        public List<string> VersionTagsReferenced = new List<string>();
         N9Context ctx;
 
         // =====================================================================
@@ -143,6 +142,7 @@ namespace n9.core
             if (expr is NameExpr)
             {
                 var e = expr as NameExpr;
+                AddVersionTagReference(e.Name);
                 return ctx.VersionTags.Contains(e.Name);
             }
 
@@ -178,10 +178,19 @@ namespace n9.core
             return sb.ToString();
         }
 
+        void AddVersionTagReference(string tag)
+        {
+            if (!VersionTagsReferenced.Contains(tag))
+                VersionTagsReferenced.Add(tag);
+        }
+
         // NOTE, one of the things going on here is that we are stating that imports must be that top level of the file.
         // like java imports or C# usings.
         // D allows imports to be at any syntactic level.
         // We dont ultimately know how valuable this will end up being, but we are trying to make it so that nothing in the
         // language design prevents us from going down that road if we decide to explore it later.
+
+        // NOTE: VersionTagsReferenced is an extremely optimistic feature wherein a future smart-IDE will know which sourcefiles
+        // need to be re-analyzed when version tags are changed.
     }
 }

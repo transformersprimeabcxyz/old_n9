@@ -41,7 +41,6 @@ namespace n9.test
             Assert.IsTrue(ctx.SourceFiles[0].Statements.Count == 1);
             decl = ctx.SourceFiles[0].Statements[0] as VariableDeclaration;
             Assert.IsTrue(decl.Name == "i");
-
         }
 
         [TestMethod]
@@ -75,6 +74,24 @@ namespace n9.test
             Assert.IsTrue(stmt2 is WhileStatement);
             Assert.IsTrue(stmt2.Body.Count == 1);
             Assert.IsTrue(stmt2.Body[0] is AssignStatement);
+        }
+
+        [TestMethod]
+        public void SourceFile_VersionTagsReferenced()
+        {
+            var ctx = N9Context.FromString("version (a || b || c) i:int;").Construct();
+            Assert.IsTrue(ctx.SourceFiles[0].VersionTagsReferenced.Count == 3);
+
+            ctx = N9Context.FromString("version (a) { i:int; version (b) j:int; }").Construct();
+            Assert.IsTrue(ctx.SourceFiles[0].VersionTagsReferenced.Count == 1);
+            // So in this test only the (a) tag is tracked. This is because when evaluation of (a) fails, 
+            // everything underneath it is culled without any processing. 
+
+            // This seems not-ideal, originally I wrote the test to assert count==2 and it failed.
+            // This test and comment documents its current behavior. If you can make it return 2 that is probably okay.
+            // For the purpose of VersionTagsReference, 1 is okay, because in the scenario of and IDE tracking which tags
+            // a source file cares about, if (a) is false then the changes to the state of (b) actually DO NOT MATTER
+            // and do not require re-evaluation of this source file.
         }
 
         [TestMethod]
