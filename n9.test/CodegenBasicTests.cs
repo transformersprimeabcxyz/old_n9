@@ -42,7 +42,7 @@ namespace n9.test
 
         void Test(string pgm, int expectedResult)
         {
-            var binder = Binder.FromString(pgm); 
+            var binder = oldBinder.FromString(pgm); 
             binder.Bind();
             var cgen = new CGen(binder);
             cgen.Generate();

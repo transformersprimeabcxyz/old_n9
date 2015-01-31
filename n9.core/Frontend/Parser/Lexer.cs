@@ -12,7 +12,6 @@ namespace n9.core
 
         FileReader reader;
         StringBuilder strbuf = new StringBuilder();
-        //DiagnosticREceiver
 
         // =====================================================================
         //  Constructor, helpers
@@ -55,18 +54,7 @@ namespace n9.core
         {
             return (ch >= '0' && ch <= '7');
         }
-
-        static int AsHexDigit(int ch) // TODO unused currently
-        {
-            if (ch >= '0' && ch <= '9')
-                return ch - '0';
-            if (ch >= 'A' && ch <= 'F')
-                return ch - 'A' + 10;
-            if (ch >= 'a' && ch <= 'f')
-                return ch - 'a' + 10;
-            return -1;
-        }
-
+        
         // At the moment we are making a diliberate choice to avoid use of unicode characters as Identifier characters
         //  - It likely opens doors for some interesting "obfuscated code" attack vectors
         //  - It likely creates ABI issues

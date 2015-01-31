@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace n9.core
 {
@@ -6,31 +7,67 @@ namespace n9.core
     {
         // ===========================================================================
 
-        N9Context ctx;
-        Module UnboundRoot;
-        public Module Root;
+        public Module Root = new Module();
+        public List<StructDeclaration> StructDecls = new List<StructDeclaration>();
+        public List<VariableDeclaration> GlobalVariables = new List<VariableDeclaration>();
+        public List<FuncDeclaration> FuncDecls = new List<FuncDeclaration>();
+
+        Module CurrentModule;
 
         // ===========================================================================
 
-        public static ProgramModel Bind(N9Context _ctx, UnboundModel unbound)
+        public static ProgramModel Generate(N9Context ctx)
         {
-            var model = new ProgramModel { UnboundRoot = unbound.PgmRoot, ctx = _ctx };
-            model.Root = new Module();
-            BuiltinTypes.RegisterBuiltins(model);
+            var model = new ProgramModel();
+            BuiltinTypes.RegisterBuiltins(model.Root);
 
-            model.Analyze();
+            foreach (var s in ctx.SourceFiles)
+                model.Analyze(s);
 
             return model;
         }
 
-        public void Analyze()
+        void Analyze(SourceFile s)
         {
-            UnboundRoot.Visit<VariableDeclaration>(VariableVisitor);
+            CurrentModule = Root; // reset Current module to Root at the start of each source file.
+
+            foreach (var stmt in s.Statements)
+                AnalyzeToplevelStatement(stmt);
         }
 
-        void VariableVisitor(string module, string name, VariableDeclaration decl)
+        void AnalyzeToplevelStatement(Statement stmt)
         {
-            Console.WriteLine("VARIABLE {0}.{1} = {2}", module, name, decl);
+            if (stmt is ModuleStatement)
+            {
+                var s = stmt as ModuleStatement;
+                CurrentModule = Root.FindOrCreateToModule(s.Module);
+            }
+
+            else if (stmt is ImportStatement)
+                return; // just ignore import statement at this phase
+
+            else if (stmt is StructDeclaration)
+            {
+                var s = stmt as StructDeclaration;
+                CurrentModule.RegisterSymbol(s.Name, s);
+                StructDecls.Add(s);
+            }
+
+            else if (stmt is VariableDeclaration)
+            {
+                var s = stmt as VariableDeclaration;
+                CurrentModule.RegisterSymbol(s.Name, s);
+                GlobalVariables.Add(s);
+            }
+
+            else if (stmt is FuncDeclaration)
+            {
+                var s = stmt as FuncDeclaration;
+                CurrentModule.RegisterSymbol(s.Name, s);
+                FuncDecls.Add(s);
+            }
+
+            else throw new Exception("Statement was not expected at top level.");
         }
     }
 }

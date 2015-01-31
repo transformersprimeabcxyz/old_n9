@@ -2,33 +2,32 @@
 
 namespace n9.core
 {
-    public class Binder
+    public class oldBinder
     {
         // =====================================================================
         //  Binder state
         // =====================================================================
 
         Parser parser;
-        Scope GlobalScope = new Scope();
         public List<FuncDeclaration> Funcs = new List<FuncDeclaration>();
 
         // =====================================================================
         //  Constructor 
         // =====================================================================
 
-        public static Binder FromParser(Parser p)
+        public static oldBinder FromParser(Parser p)
         {
-            return new Binder { parser = p };
+            return new oldBinder { parser = p };
         }
 
-        public static Binder FromFile(string filename)
+        public static oldBinder FromFile(string filename)
         {
-            return new Binder { parser = Parser.FromFile(filename) };
+            return new oldBinder { parser = Parser.FromFile(filename) };
         }
 
-        public static Binder FromString(string pgm, string filename = "default.n9")
+        public static oldBinder FromString(string pgm, string filename = "default.n9")
         {
-            return new Binder { parser = Parser.FromString(pgm, filename) };
+            return new oldBinder { parser = Parser.FromString(pgm, filename) };
         }
 
         // =====================================================================

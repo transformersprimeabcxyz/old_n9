@@ -37,14 +37,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArchDriver.cs" />
+    <Compile Include="Frontend\ArchDriver.cs" />
     <Compile Include="Backend\CGen.cs" />
     <Compile Include="Frontend\Binder\Binder.cs" />
     <Compile Include="Frontend\Parser\SourceFile.cs" />
+    <Compile Include="Frontend\Semantic\Binder.cs" />
     <Compile Include="Frontend\Semantic\Module.cs" />
-    <Compile Include="Frontend\Semantic\ProgramModel.cs" />
+    <Compile Include="Frontend\Semantic\StructLayout.cs" />
     <Compile Include="Frontend\Semantic\Types.cs" />
-    <Compile Include="Frontend\Semantic\UnboundProgramModel.cs" />
+    <Compile Include="Frontend\Semantic\ProgramModel.cs" />
     <Compile Include="Frontend\Parser\Statements.cs" />
     <Compile Include="Frontend\Diagnostic.cs" />
     <Compile Include="Frontend\FileReader.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="Frontend\Parser\InfixParselets.cs" />
     <Compile Include="Frontend\Parser\PrefixParselets.cs" />
     <Compile Include="Frontend\Parser\Parser.cs" />
-    <Compile Include="Frontend\Binder\Scope.cs" />
+    <Compile Include="Frontend\Semantic\Scope.cs" />
     <Compile Include="N9Context.cs" />
     <Compile Include="N9Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

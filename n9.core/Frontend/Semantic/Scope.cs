@@ -9,19 +9,28 @@ namespace n9.core
     public class Scope
     {
         // =====================================================
+        
         Scope parent = null;
         Dictionary<string, object> symbols = new Dictionary<string, object>();
 
-        // TODO: list of imports
-        // TODO: actions to do at scope end
+        Module Root;
+        
+        // TODO: actions to do at scope end?
 
         // =====================================================
 
+        private Scope() {}
+        public Scope(Module root)
+        {
+            Root = root;
+        }
+        
+
         public Scope NewScope()
         {
-            return new Scope { parent = this };
+            return new Scope { parent = this, Root = this.Root };
         }
-
+        
         public void Register(string symbol, object info)
         {
             symbols[symbol] = info;

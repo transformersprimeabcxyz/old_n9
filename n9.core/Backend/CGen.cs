@@ -9,13 +9,13 @@ namespace n9.core
         //  CGen state
         // =====================================================================
 
-        Binder binder;
+        oldBinder binder;
 
         // =====================================================================
         //  Constructor
         // =====================================================================
 
-        public CGen(Binder b) // TODO refactoring related to data flow between steps.
+        public CGen(oldBinder b) // TODO refactoring related to data flow between steps.
         {
             binder = b;
         }

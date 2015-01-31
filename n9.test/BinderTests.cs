@@ -10,7 +10,7 @@ namespace n9.test
         [TestMethod]
         public void Binder_Basic()
         {
-            var binder = Binder.FromString(@"func a() { }"); binder.Bind();
+            var binder = oldBinder.FromString(@"func a() { }"); binder.Bind();
             Assert.IsTrue(binder.Funcs.Count == 1);
         }
 

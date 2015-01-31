@@ -11,14 +11,16 @@ namespace n9.cmd
 
             pgm = @"
 
-            module module1;
+            version(_)
+                never : i64;
 
-            version(a && b)
-                a_and_b:int;
-            else version(a)
-                a:int;
-            else version(b)
-                b:int;
+            always : i32;
+
+            struct Point2D
+            {
+                x: i32;
+                y: i32;
+            }
 
             func test()
             {
@@ -39,9 +41,12 @@ namespace n9.cmd
             }
             ";
 
-            var ctx = N9Context.FromString(pgm).Tags("a","b").Construct();
+            var ctx = N9Context.FromString(pgm).Construct();
             Console.WriteLine(ctx.SourceFiles[0]);
-
+            
+            var model = ProgramModel.Generate(ctx);
+            new Binder(ctx, model).Bind();
+            
             return;
 
 
@@ -68,7 +73,7 @@ namespace n9.cmd
 
             ctx = N9Context.FromString(pgm).Construct();
 
-            var binder = Binder.FromString(pgm); binder.Bind();
+            var binder = oldBinder.FromString(pgm); binder.Bind();
 
             Console.WriteLine(binder.Funcs[0]);
 

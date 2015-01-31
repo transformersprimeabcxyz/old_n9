@@ -39,6 +39,7 @@ namespace n9.core
         public bool SizedArray;
         public bool Pointer;
         public int ArraySize;
+        public N9Type N9Type;
 
         // TODO.. pointer-to-pointers, non-literal-sized arrays, other modifiers or annotations
 
