@@ -12,7 +12,7 @@ namespace n9.core
 
         // ===========================================================================
 
-        public static ProgramModel Bind(N9Context _ctx, UnboundProgramModel unbound)
+        public static ProgramModel Bind(N9Context _ctx, UnboundModel unbound)
         {
             var model = new ProgramModel { UnboundRoot = unbound.PgmRoot, ctx = _ctx };
             model.Root = new Module();

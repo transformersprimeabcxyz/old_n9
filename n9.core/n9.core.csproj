@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArchDriver.cs" />
     <Compile Include="Backend\CGen.cs" />
     <Compile Include="Frontend\Binder\Binder.cs" />
     <Compile Include="Frontend\Parser\SourceFile.cs" />

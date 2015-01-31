@@ -2,7 +2,7 @@
 
 namespace n9.core
 {
-    public class UnboundProgramModel
+    public class UnboundModel
     {
         // ===========================================================================
 
@@ -11,9 +11,9 @@ namespace n9.core
 
         // ===========================================================================
 
-        public static UnboundProgramModel Generate(N9Context ctx)
+        public static UnboundModel Generate(N9Context ctx)
         {
-            var model = new UnboundProgramModel();
+            var model = new UnboundModel();
 
             foreach (var s in ctx.SourceFiles)
                 model.Analyze(s);

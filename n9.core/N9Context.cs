@@ -13,6 +13,8 @@ namespace n9.core
         public OptimizationLevel OptimizationLevel = OptimizationLevel.None;
         public bool GenerateDebugSymbols = true;
 
+        public ArchDriver ArchDriver;
+
         public List<String> VersionTags = new List<string>();
         public List<SourceFile> SourceFiles = new List<SourceFile>();
 
@@ -25,8 +27,8 @@ namespace n9.core
 
             switch (ArchBits)
             {
-                case ArchBits.Arch32Bit: Tags("x86", "arch32bit"); break;
-                case ArchBits.Arch64Bit: Tags("x64", "arch64bit"); break;
+                case ArchBits.Arch32Bit: Tags("x86", "arch32bit", "intel"); ArchDriver = new x86Driver(); break;
+                case ArchBits.Arch64Bit: Tags("x64", "arch64bit", "intel"); ArchDriver = new x64Driver(); break;
             }
 
             foreach (var src in SourceFiles)

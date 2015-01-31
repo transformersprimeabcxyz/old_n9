@@ -36,16 +36,16 @@ namespace n9.core
             return Parser.FromString(pgm);
         }
 
-        public static UnboundProgramModel GetUnboundModel(string pgm)
+        public static UnboundModel GetUnboundModel(string pgm)
         {
             var ctx = N9Context.FromString(pgm).Construct();
-            return UnboundProgramModel.Generate(ctx);
+            return UnboundModel.Generate(ctx);
         }
 
         public static ProgramModel GetModel(string pgm)
         {
             var ctx = N9Context.FromString(pgm).Construct();
-            var unbound = UnboundProgramModel.Generate(ctx);
+            var unbound = UnboundModel.Generate(ctx);
             return ProgramModel.Bind(ctx, unbound);
         }
 
