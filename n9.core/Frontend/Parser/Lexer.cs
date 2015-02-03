@@ -219,7 +219,7 @@ namespace n9.core
                                 };
                             }
                         }
-
+                        
                         if (ch2 == 'b') // Binary literal
                         {
                             strbuf.Clear();
@@ -467,7 +467,7 @@ namespace n9.core
         public TokenType Type;
         public FilePosition Position;
 
-        public long IntegerLiteral;
+        public decimal IntegerLiteral;
         public double FloatLiteral;
         public char CharLiteral;
         public string StringLiteral;

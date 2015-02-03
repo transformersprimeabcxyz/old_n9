@@ -21,7 +21,37 @@ namespace n9.core
     public class IntegerType : BuiltinType
     {
         public bool Signed;
-        public bool CanRepresent(Token literal)
+        //public bool CanRepresent(Token literal)
+        //{
+        //    switch (Signed)
+        //    {
+        //        case true:
+        //        {
+        //            switch(Size)
+        //            {
+        //                case 1: { sbyte ignore; return sbyte.TryParse(literal.Text, out ignore); }
+        //                case 2: { short ignore; return short.TryParse(literal.Text, out ignore); }
+        //                case 4: { int   ignore; return int.  TryParse(literal.Text, out ignore); }
+        //                case 8: { long  ignore; return long. TryParse(literal.Text, out ignore); }
+        //            }
+        //            break;
+        //        }
+        //        case false:
+        //        {
+        //            switch (Size)
+        //            {
+        //                case 1: { byte   ignore; return byte.  TryParse(literal.Text, out ignore); }
+        //                case 2: { ushort ignore; return ushort.TryParse(literal.Text, out ignore); }
+        //                case 4: { uint   ignore; return uint.  TryParse(literal.Text, out ignore); }
+        //                case 8: { ulong  ignore; return ulong. TryParse(literal.Text, out ignore); }
+        //            }
+        //        }
+        //        break;
+        //    }    
+        //    return true;
+        //}
+
+        public bool CanRepresent(decimal literal)
         {
             switch (Signed)
             {
@@ -29,10 +59,10 @@ namespace n9.core
                 {
                     switch(Size)
                     {
-                        case 1: { sbyte ignore; return sbyte.TryParse(literal.Text, out ignore); }
-                        case 2: { short ignore; return short.TryParse(literal.Text, out ignore); }
-                        case 4: { int   ignore; return int.  TryParse(literal.Text, out ignore); }
-                        case 8: { long  ignore; return long. TryParse(literal.Text, out ignore); }
+                        case 1: return !(literal < sbyte.MinValue || literal > sbyte.MaxValue);
+                        case 2: return !(literal < short.MinValue || literal > short.MaxValue);
+                        case 4: return !(literal < int  .MinValue || literal > int  .MaxValue);
+                        case 8: return !(literal < long .MinValue || literal > long .MaxValue);
                     }
                     break;
                 }
@@ -40,16 +70,19 @@ namespace n9.core
                 {
                     switch (Size)
                     {
-                        case 1: { byte   ignore; return byte.  TryParse(literal.Text, out ignore); }
-                        case 2: { ushort ignore; return ushort.TryParse(literal.Text, out ignore); }
-                        case 4: { uint   ignore; return uint.  TryParse(literal.Text, out ignore); }
-                        case 8: { ulong  ignore; return ulong. TryParse(literal.Text, out ignore); }
+                        case 1: return !(literal < byte.MinValue || literal > byte.MaxValue);
+                        case 2: return !(literal < ushort.MinValue || literal > ushort.MaxValue);
+                        case 4: return !(literal < uint.MinValue || literal > uint.MaxValue);
+                        case 8: return !(literal < ulong.MinValue || literal > ulong.MaxValue);
                     }
                 }
                 break;
             }    
             return true;
         }
+
+
+
     }
 
     public static class BuiltinTypes

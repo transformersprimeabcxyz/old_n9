@@ -57,7 +57,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CodegenBasicTests.cs" />
-    <Compile Include="BinderTests.cs" />
+    <Compile Include="Semantic\BinderTests.cs" />
     <Compile Include="Parser\SourceFileTests.cs" />
     <Compile Include="Parser\ParserTests.cs" />
     <Compile Include="Parser\LexerTests.cs" />
