@@ -81,7 +81,7 @@ namespace n9.core
                 if (e.Op == TokenType.Asterisk)
                     return left * right;
                 if (e.Op == TokenType.Divslash)
-                    return left / right;
+                    return decimal.Truncate(left.Value / right.Value);
             }
 
             return null;
