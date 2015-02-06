@@ -68,21 +68,6 @@ namespace n9.core
             return IsFirstIdChar(ch) || IsDigit(ch);
         }
 
-        static bool IsValidSymbolName(string id) // TODO note unused
-        {
-            if (id == null || id.Length == 0)
-                return false;
-
-            if (IsFirstIdChar(id[0]) == false)
-                return false;
-
-            for (int i = 1; i < id.Length; i++)
-                if (IsIdChar(id[i]) == false)
-                    return false;
-
-            return true;
-        }
-
         // TODO: I thoroughly dislike the mismatched use of 'char' and 'int'.
         // Things to fix eventually.
 
@@ -107,7 +92,7 @@ namespace n9.core
             if (ch2 == 'f') return '\f'; 
             if (ch2 == 'v') return '\v';
 
-            // TODO /u unicode stuff
+            // TODO \u unicode stuff
 
             throw new CompilationException(Diagnostic.Error("Invalid character sequence \\" + (char)ch2));
         }

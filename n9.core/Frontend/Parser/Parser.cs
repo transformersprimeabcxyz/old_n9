@@ -157,13 +157,8 @@ namespace n9.core
                     switch (second.Type)
                     {
                         case TokenType.Colon:
-                        {
-                            var decl = ParseVariableDeclaration();
-                            Consume(TokenType.Semi);
-                            return decl;
-                        }
+                            return ParseVariableDeclaration();
                     }
-
                     break;
                 }
                 case TokenType.Struct:
@@ -247,6 +242,7 @@ namespace n9.core
                 if (Match(TokenType.Equals))
                     decl.InitializationExpression = ParseExpression();
             }
+            Consume(TokenType.Semi);
             return decl;
         }
 
@@ -268,10 +264,8 @@ namespace n9.core
             var decl = new StructDeclaration { Name = name.Text };
 
             while (!Match(TokenType.RCurly))
-            {
                 decl.Members.Add(ParseVariableDeclaration());
-                Consume(TokenType.Semi);
-            }
+
             return decl;
         }
 
